@@ -6,6 +6,11 @@
 <title>오늘의 놀이 발자국 · 서울상상나라</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
+  @font-face{font-family:'KerisKedyuche';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-3@1.0/KERISKEDU_B.woff2') format('woff2');font-weight:700;font-display:swap}
+  @font-face{font-family:'SchoolSafetyRoundedSmile';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimDunggeunmisoTTF-R.woff2') format('woff2');font-weight:400;font-display:swap}
+  @font-face{font-family:'SchoolSafetyRoundedSmile';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimDunggeunmisoTTF-B.woff2') format('woff2');font-weight:700;font-display:swap}
+  .hero h1{font-family:'KerisKedyuche',Pretendard,sans-serif!important;font-weight:700!important}
+  .hero .eyebrow,.combo,.slogan,.pureTag,.cheer,.card h2,h3,.dom .dname,.next .name,.route .where b{font-family:'SchoolSafetyRoundedSmile',Pretendard,sans-serif;font-weight:700}
   :root{
     --pink:#F2679A; --pink-soft:#FFE3EE; --ink:#3A2A33; --muted:#8B7781; --bg:#FFF7FA; --card:#FFFFFF;
     --accent:var(--pink); --accent-ink:var(--pink); --accent-soft:var(--pink-soft); --accent2:var(--pink); --accent2-soft:var(--pink-soft);
@@ -60,7 +65,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes shine{0%{background-position:100% 0}60%,100%{background-position:-50% 0}}
   @keyframes twinkle{0%,100%{opacity:.35;scale:.8}50%{opacity:1;scale:1.1}}
-  .slogan{font-size:16px;font-weight:700;margin-top:12px}
+  .slogan{font-size:16px;font-weight:700;margin-top:12px;color:var(--muted)}
   .tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
   .tags span{font-size:12px;font-weight:700;color:var(--accent-ink);background:#ffffffcc;padding:4px 10px;border-radius:999px}
   .note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
@@ -90,6 +95,20 @@
   .rest{font-size:14px;color:var(--muted);margin-top:12px;padding-left:2px}
   .rest b{color:var(--ink)}
 
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chips span{font-size:12.5px;font-weight:800;background:#fff;border:1.5px solid;padding:3px 10px;border-radius:999px}
+  .dom h4{font-size:13.5px;font-weight:800;margin-top:12px}
+  .praise{margin-top:10px;border-left:4px solid var(--accent);padding:6px 0 6px 12px;font-size:15px;font-weight:700}
+  .praise small{display:block;font-size:12px;font-weight:600;color:var(--muted)}
+  /* 놀이 경로 */
+  .route{list-style:none;margin-top:8px;position:relative}
+  .route::before{content:"";position:absolute;left:58px;top:14px;bottom:14px;width:2px;background:#EEDFE6}
+  .route li{display:grid;grid-template-columns:46px 26px 1fr;align-items:center;gap:6px;padding:7px 0}
+  .route time{font-size:13px;font-weight:700;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+  .route .pin{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:1;color:#fff}
+  .route .pin svg{width:13px;height:13px}
+  .route .where{font-size:14.5px}
+  .route .where small{color:var(--muted);font-size:12.5px;margin-left:4px}
   /* 더 보기 */
   .clamp{max-height:150px;overflow:hidden;position:relative;transition:max-height .4s ease}
   .clamp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(transparent,var(--fade,#fff))}
@@ -175,6 +194,7 @@ const ICONS = {
   "1F":svgWrap('<path d="M5 5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/>'),
   "2F":svgWrap('<path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/>'),
   "3F":svgWrap('<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'),
+  X:   svgWrap('<path d="M5 21V4h11l-2 4 2 4H5"/>'),
 };
 const stampIcon = f => `<img src="images/icons/${f}.png" alt="" onerror="this.insertAdjacentHTML('afterend', ICONS_SRC['${f}']);this.remove()">`;
 window.ICONS_SRC = ICONS;
@@ -183,29 +203,29 @@ window.ICONS_SRC = ICONS;
 const TYPES = {
   energy:{ name:"뿜뿜 발전가", emoji:"🏃", deco:"⚡", floor:"2F", color:"#FF9A3C", ink:"#DB6E0F", soft:"#FFEEDC",
            bar:"몸으로 움직이기", barHint:"뛰고, 돌리고, 춤추기",
-           what:"뛰고, 밀고, 돌리면서 온몸으로 세상을 알아가는 놀이예요.",
-           look:"이 놀이를 할 때 아이들은 '한 번 더!'를 외치며 같은 동작을 반복하고, 더 세게·더 빨리 해 보면서 자기 몸을 조절해 봐요.",
+           what:"뛰고, 밀고, 돌리면서 온몸으로 세상을 알아가는 유형이에요.", strengths:["끈기","몸 조절력","도전 정신"], acts:["페달 발전기","휴먼카","댄스마루","자전거"], praise:["몇 번이나 다시 해 봤네! 끝까지 해내는 모습이 멋졌어.","어떻게 하니까 더 빨리 됐어?"],
+           look:"이 유형의 아이들은 '한 번 더!'를 외치며 같은 동작을 반복하고, 더 세게·더 빨리 해 보면서 자기 몸을 조절해 봐요. 해냈을 때의 짜릿함이 다음 도전으로 이어지는 게 특징이에요.",
            grow:"대근육을 쓰는 놀이는 몸의 균형과 조절 능력을 키우고, '내가 해냈다'는 경험이 자신감으로 이어져요.",
            q:[["떠올리기","오늘 몸으로 어떤 에너지를 만들었어?"],["한 걸음 더","우리 집에서도 몸으로 불을 켤 수 있을까?"]],
            why:"첫 질문은 오늘 한 일을 말로 떠올리게 해서 기억을 단단하게 만들어요. 두 번째 질문은 '움직임 → 전기'라는 에너지 전환 원리를 집이라는 새로운 상황에 적용해 보게 해요." },
   solver:{ name:"척척 해결사", emoji:"🧭", deco:"🔍", floor:"3F", color:"#8CCB3F", ink:"#5A9414", soft:"#F0F8E0",
            bar:"생각하고 해결하기", barHint:"계획하고, 고르고, 문제 풀기",
-           what:"계획하고, 고르고, 문제를 풀면서 머리로 세상을 알아가는 놀이예요.",
-           look:"이 놀이를 할 때 아이들은 '이건 왜 그래?', '이렇게 하면 어때?' 하고 묻고, 순서를 정하거나 방법을 바꿔 보며 놀아요.",
+           what:"계획하고, 고르고, 문제를 풀면서 머리로 세상을 알아가는 유형이에요.", strengths:["계획력","문제 해결력","호기심"], acts:["텐트 치기","캠핑 가방 꾸리기","장보기","캠핑 계획 세우기"], praise:["그 방법은 어떻게 생각해 냈어?","잘 안 될 때 다른 방법을 찾아낸 게 정말 멋졌어."],
+           look:"이 유형의 아이들은 '이건 왜 그래?', '이렇게 하면 어때?' 하고 묻고, 순서를 정하거나 방법을 바꿔 보며 놀아요. 답을 알려 주기보다 스스로 찾을 시간을 줄 때 가장 즐거워해요.",
            grow:"필요한 것을 고르고 계획대로 해 보는 경험은 생각을 정리하고 스스로 조절하는 힘(실행 기능)을 키워요.",
            q:[["떠올리기","캠핑 갈 때 딱 3개만 챙긴다면 뭘 가져갈래?"],["한 걸음 더","하나를 깜빡하면 어떻게 할까?"]],
            why:"'딱 3개'처럼 조건이 있으면 무엇이 더 중요한지 비교하고 고르게 돼요(우선순위). '깜빡하면?'은 계획이 틀어졌을 때 다른 방법을 찾는 문제 해결 연습이에요." },
   story: { name:"이야기꾼", emoji:"🖍️", deco:"📖", floor:"B1", color:"#BC73E0", ink:"#9145BF", soft:"#F6EBFC",
            bar:"이야기·마음 표현하기", barHint:"그리고, 쓰고, 꾸며 보기",
-           what:"그리고, 쓰고, 꾸며 보면서 내 이야기와 마음을 밖으로 꺼내는 놀이예요.",
-           look:"이 놀이를 할 때 아이들은 자기 경험을 그림이나 말로 옮기고, '그래서 이렇게 됐어!' 하며 이야기를 덧붙여 나가요.",
+           what:"그리고, 쓰고, 꾸며 보면서 내 이야기와 마음을 밖으로 꺼내는 유형이에요.", strengths:["상상력","표현력","마음 알아차리기"], acts:["그림책 만들기","마음 보관함","반짝이는 나","그림책 읽기"], praise:["네 이야기 더 듣고 싶다! 그다음엔 어떻게 돼?","그 그림에는 어떤 마음을 담았어?"],
+           look:"이 유형의 아이들은 자기 경험을 그림이나 말로 옮기고, '그래서 이렇게 됐어!' 하며 이야기를 덧붙여 나가요. 작은 일에도 이야기를 붙이는 게 이 유형만의 매력이에요.",
            grow:"생각과 감정을 이야기로 정리하는 경험은 표현력과 문해력의 바탕이 되고, 내 마음을 알아차리는 힘도 길러 줘요.",
            q:[["떠올리기","오늘 그림책 작업실에서 어떤 이야기를 만들었어?"],["한 걸음 더","그 다음엔 무슨 일이 생길까?"]],
            why:"자기가 만든 이야기를 다시 말해 보는 건 생각을 순서대로 정리하는 연습이에요. '그 다음엔?'은 이야기의 구조를 이어 가게 해서 읽고 쓰는 힘(문해력)의 바탕이 돼요." },
   heart: { name:"마음 통역가", emoji:"💬", deco:"💙", floor:"1F", color:"#4A9DFF", ink:"#2477DD", soft:"#E3F0FF",
            bar:"다른 사람과 함께하기", barHint:"마음 주고받고, 힘 모으기",
-           what:"표정·몸짓·말로 다른 사람과 마음을 주고받고, 힘을 모으는 놀이예요.",
-           look:"이 놀이를 할 때 아이들은 '같이 하자!' 하고 손을 내밀거나, 다른 사람의 표정을 살피며 움직임을 맞춰요.",
+           what:"표정·몸짓·말로 다른 사람과 마음을 주고받고, 힘을 모으는 유형이에요.", strengths:["공감력","협동심","소통력"], acts:["몸짓 챌린지","눈빛으로 통해요","표정으로 나타내요","마음을 말해요"], praise:["친구 표정을 보고 먼저 물어봐 준 거 정말 멋졌어.","같이 하니까 더 재밌었지? 네 덕분이야."],
+           look:"이 유형의 아이들은 '같이 하자!' 하고 손을 내밀거나, 다른 사람의 표정을 살피며 움직임을 맞춰요. 혼자보다 함께일 때 더 신나는 게 특징이에요.",
            grow:"다른 사람의 마음을 헤아리고 함께 해내는 경험은 공감하는 힘과 협력하는 힘을 키워요.",
            q:[["떠올리기","오늘 표정이나 몸짓으로 마음을 전해 봤어?"],["한 걸음 더","지금 엄마 아빠 얼굴은 어떤 기분 같아?"]],
            why:"말 없이도 마음을 전할 수 있다는 걸 다시 떠올려요. 가족의 표정을 보고 기분을 짐작해 보는 건 다른 사람의 마음을 헤아리는 힘(공감)을 키우는 연습이에요." },
@@ -222,7 +242,7 @@ const COMBOS = {
     scenes:["신나는 순간에 저절로 몸을 흔들거나 펄쩍 뛰었을 거예요.","'나 이거 봐!' 하며 자기만의 동작을 보여 줬을 거예요."],
     grow:"감정을 몸으로 표현하는 경험은 내 기분을 알아차리고 건강하게 드러내는 힘을 키워요. 말로 하기 어려운 마음도 몸으로는 먼저 표현할 수 있어요.",
     tip:"좋아하는 노래에 맞춰 '신나는 춤, 졸린 춤, 화난 춤'처럼 기분 따라 춤을 바꿔 보세요." },
-  "energy-heart":{ title:"함께 달리는 팀 플레이어", slogan:"같이 하면 더 신나요!", tags:["힘을모아","같이하자","협동놀이"],
+  "energy-heart":{ title:"함께 뛰는 응원 대장", slogan:"같이 하면 더 신나요!", tags:["힘을모아","같이하자","협동놀이"],
     scenes:["휴먼카처럼 여럿이 힘을 합쳐야 움직이는 놀이에서 특히 신났을 거예요.","처음 만난 친구에게도 '같이 하자!' 하고 다가갔을 수 있어요."],
     grow:"몸을 맞춰 함께 움직이는 경험은 다른 사람과 속도와 리듬을 맞추는 협력의 힘을 키워요.",
     tip:"이인삼각이나 둘이 손잡고 균형 잡기처럼 함께해야 되는 몸 놀이를 해 보세요." },
@@ -265,11 +285,11 @@ const COMBOS = {
     grow:"한 가지 이야기에 깊이 몰입하는 경험은 상상력과 함께 생각을 글과 그림으로 옮기는 표현력을 키워요.",
     tip:"'나만의 그림책' 공책을 하나 만들어 주세요. 오늘 이야기의 다음 장을 이어 그려 볼 수 있어요." },
 
-  "heart-energy":{ title:"몸짓으로 통하는 친구", slogan:"말보다 몸짓이 먼저 통해요!", tags:["눈빛교환","함께움직이기","몸짓대화"],
+  "heart-energy":{ title:"몸짓으로 마음을 전하는 배달부", slogan:"말보다 몸짓이 먼저 통해요!", tags:["눈빛교환","함께움직이기","몸짓대화"],
     scenes:["다른 사람과 동작을 맞추는 놀이를 즐겼을 거예요.","눈빛이나 손짓으로 신호를 주고받았을 거예요."],
     grow:"몸짓과 표정으로 신호를 주고받는 경험은 비언어적 소통 능력과 함께 다른 사람과 호흡을 맞추는 힘을 키워요.",
     tip:"말 없이 몸짓으로만 단어를 맞히는 '몸으로 말해요' 놀이를 해 보세요." },
-  "heart-solver":{ title:"생각을 모으는 조율사", slogan:"모두에게 좋은 방법을 찾아요!", tags:["공평하게","의견모으기","배려"],
+  "heart-solver":{ title:"생각을 모으는 꼬마 반장", slogan:"모두에게 좋은 방법을 찾아요!", tags:["공평하게","의견모으기","배려"],
     scenes:["다른 사람의 생각을 듣고 '그럼 이렇게 하자' 하고 정리했을 거예요.","'어떻게 하면 모두 공평할까?' 같은 고민에 오래 머물렀을 거예요."],
     grow:"여러 생각을 듣고 함께 정하는 경험은 공정함과 배려를 생각하는 힘, 갈등을 풀어 가는 힘을 키워요.",
     tip:"간식을 공평하게 나누는 방법을 아이가 직접 정해 보게 해 주세요." },
@@ -328,6 +348,17 @@ R.setProperty("--accent", T.color);   R.setProperty("--accent-soft", T.soft);   
 R.setProperty("--accent2", pure ? T.color : S.color);
 R.setProperty("--accent2-soft", pure ? T.soft : S.soft);
 
+const route = (P.get("r") || "").split("_").map(x => x.split(".")).filter(([f, t]) => (FLOOR_ORDER.includes(f) || f === "X") && /^\d{4}$/.test(t || ""));
+const routeHtml = route.length ? `
+  <section class="card">
+    <h2>🗺️ 오늘의 놀이 경로</h2>
+    <ul class="route">${route.map(([f, t]) => {
+      const time = t.slice(0, 2) + ":" + t.slice(2);
+      if (f === "X") return `<li><time>${time}</time><span class="pin" style="background:var(--pink)">${ICONS.X}</span><span class="where"><b>출구</b><small>발자국 ${n}개 완성!</small></span></li>`;
+      const ty = TYPES[FLOORS[f].type];
+      return `<li><time>${time}</time><span class="pin" style="background:${ty.color}">${ICONS[f]}</span><span class="where"><b>${f} ${FLOORS[f].name}</b><small>${ty.name}</small></span></li>`;
+    }).join("")}</ul>
+  </section>` : "";
 const pct = hasBars ? (() => { const s = bars.reduce((a, b) => a + b, 0); return Object.fromEntries(BAR_ORDER.map((k, i) => [k, Math.round(bars[i] / s * 100)])); })() : null;
 
 /* 꾸밈 아이콘 (1등 아이콘 + 2등 아이콘이 떠 있음) */
@@ -352,57 +383,57 @@ const title = both ? `${T.name}<br><span style="font-size:20px">이면서</span>
 const whereLine = k => {
   const f = TYPES[k].floor;
   return visited.includes(f)
-    ? `오늘은 주로 <span class="where">${f} ${FLOORS[f].name}</span>에서 쌓였어요.`
-    : `오늘은 여러 전시에서 조금씩 쌓였어요.`;
+    ? `오늘은 <b>${f} ${FLOORS[f].name}</b>에서 이 모습이 가장 많이 보였어요.`
+    : `오늘은 여러 전시에서 조금씩 이 모습이 보였어요.`;
 };
-const domBlock = (k, label, open = false) => `
-  <div class="dom" style="background:${TYPES[k].soft};--fade:${TYPES[k].soft}">
-    <div class="rank" style="color:${TYPES[k].ink}">${label}${pct ? ` · ${pct[k]}%` : ""}</div>
-    <div class="dname" style="color:${TYPES[k].ink}"><span class="hicon">${ICONS[TYPES[k].floor]}</span>${TYPES[k].bar}</div>
-    <div class="clamp${open ? " open" : ""}" style="--fade:${TYPES[k].soft}">
-      <p>${TYPES[k].what} ${whereLine(k)}</p>
-      <p>${TYPES[k].look}</p>
-      <p><b>이 놀이로 자라는 힘</b><br>${TYPES[k].grow}</p>
-    </div>
-    ${open ? "" : `<button class="moreBtn" style="color:${TYPES[k].ink}">더 보기 ▾</button>`}
+const domBlock = (k, label, full) => {
+  const t = TYPES[k];
+  return `
+  <div class="dom" style="background:${t.soft}">
+    <div class="rank" style="color:${t.ink}">${label}${pct ? ` · ${pct[k]}%` : ""} · ${t.bar}</div>
+    <div class="dname" style="color:${t.ink}"><span class="hicon">${ICONS[t.floor]}</span>${t.name}</div>
+    <p>${t.what} ${whereLine(k)}</p>
+    <div class="chips">${t.strengths.map(x => `<span style="color:${t.ink};border-color:${t.color}">${x}</span>`).join("")}</div>
+    <p style="margin-top:10px">${t.look}</p>
+    ${full ? `
+    <h4 style="color:${t.ink}">이 유형이 좋아하는 전시 활동</h4><p>${t.acts.join(" · ")}</p>
+    <h4 style="color:${t.ink}">이 유형으로 자라는 힘</h4><p>${t.grow}</p>` : ""}
   </div>`;
-
+};
 const barsHtml = hasBars ? BAR_ORDER.map(k => `
   <div class="bar">
-    <div class="lbl"><span>${TYPES[k].bar}<small>${TYPES[k].barHint}</small></span><span class="pct" style="color:${TYPES[k].ink}">${pct[k]}%</span></div>
+    <div class="lbl"><span>${TYPES[k].name}<small>${TYPES[k].bar}</small></span><span class="pct" style="color:${TYPES[k].ink}">${pct[k]}%</span></div>
     <div class="track"><div class="fill" data-w="${Math.max(4, pct[k] / Math.max(...Object.values(pct)) * 100)}" style="background:${TYPES[k].color}"></div></div>
   </div>`).join("") : "";
 
-const restHtml = rank.slice(2).map(k => {
-  const f = TYPES[k].floor;
-  return `<div class="rest">${TYPES[k].emoji} <b>${TYPES[k].bar}</b>${pct ? ` ${pct[k]}%` : ""} — 오늘은 조금 덜 했어요. 다음엔 <b>${f} ${FLOORS[f].name}</b>에서 더 해 볼 수 있어요.</div>`;
-}).join("");
+
 
 const whyHtml = `
   <section class="card">
     <h2>🔎 왜 이렇게 나왔을까?</h2>
-    <div class="lead">전시마다 머문 시간을 바탕으로, 오늘 놀이 중 어떤 놀이가 얼마나 많았는지 계산했어요.</div>
+    <div class="lead">전시마다 머문 시간을 바탕으로 4가지 유형 점수를 계산했어요. 가장 높은 유형과 두 번째 유형이 만나 오늘의 유형이 돼요.</div>
     ${barsHtml}
-    ${domBlock(type, "1위", pure)}
+    ${domBlock(type, "1위", true)}
     ${pure
-      ? `<div class="rest">${S.emoji} 두 번째로 많이 한 놀이는 <b>${S.bar}</b>${pct ? ` ${pct[sub]}%` : ""}예요.</div>`
-      : domBlock(sub, "2위")}
-    ${restHtml}
+      ? `<div class="rest">두 번째로 많이 나온 유형은 <b>${S.name}</b>${pct ? ` ${pct[sub]}%` : ""}예요.</div>`
+      : domBlock(sub, "2위", false)}
     ${pure ? `<p class="muted" style="margin-top:12px">✨ 1위가 2위보다 확실히 앞서서 <b>집중형</b>이 나왔어요. 한 가지 놀이에 깊이 빠졌다는 뜻이에요.</p>` : ""}
   </section>`;
 
 const detailHtml = `
   <section class="card">
     <h2>🦖 ${C.title}</h2>
-    <div class="lead">${pure ? `${T.bar}에 푹 빠진 집중형` : `${T.bar} + ${S.bar}가 만났어요`}</div>
-    <div class="clamp">
+    <div class="lead">${pure ? `${T.name} 성향이 확실하게 나온 집중형이에요` : `${T.name} + ${S.name}가 만난 유형이에요`}</div>
+    <div>
       <h3 style="margin-top:4px">오늘 이런 모습이었을 거예요</h3>
       <ul class="scenes">${C.scenes.map(s => `<li>${s}</li>`).join("")}</ul>
       <h3>이 조합으로 자라는 힘</h3>
       <p>${C.grow}</p>
       <div class="tip"><b>🏠 집에서 이어 가기</b><br>${C.tip}</div>
+      <h3>💬 오늘은 이렇게 칭찬해 주세요</h3>
+      <div class="praise">"${T.praise[0]}"<small>결과보다 과정을 칭찬하면 다음 도전으로 이어져요</small></div>
+      <div class="praise" style="border-color:${(pure ? T : S).color}">"${(pure ? T : S).praise[pure ? 1 : 0]}"</div>
     </div>
-    <button class="moreBtn">더 보기 ▾</button>
     <div class="pair">
       <div>🤝 찰떡 놀이 짝꿍<b>${COMBOS[buddyKey].title}</b></div>
       ${nextF ? `<div>🚀 다음 도전<b>${TYPES[FLOORS[nextF].type].name}</b>${nextF} ${FLOORS[nextF].name}에서</div>` : ""}
@@ -452,6 +483,7 @@ app.innerHTML = `
   </section>
   <p class="note">성격 진단이 아니라 <b>오늘의 놀이 방식</b>이에요.<br>다음엔 다른 유형이 나올 수도 있어요!</p>
 
+  ${routeHtml}
   ${whyHtml}
   ${detailHtml}
   ${topHtml}
