@@ -7,18 +7,17 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root{
-    --pink:#F2679A; --pink-soft:#FFE3EE; --yellow:#FFD34E; --sky:#A9D3F5;
-    --ink:#3A2A33; --muted:#8B7781; --bg:#FFF7FA; --card:#FFFFFF;
+    --pink:#F2679A; --pink-soft:#FFE3EE; --ink:#3A2A33; --muted:#8B7781; --bg:#FFF7FA; --card:#FFFFFF;
     --accent:var(--pink); --accent-soft:var(--pink-soft);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-       background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+       background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
   .wrap{max-width:480px;margin:0 auto;padding:20px 18px 40px}
   .top{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
   .top b{color:var(--pink)}
 
-  /* 발자국 */
+  /* 발자국 스탬프 */
   .steps{display:flex;gap:8px;justify-content:center;margin:18px 0 6px}
   .step{width:62px;text-align:center;font-size:12px;font-weight:700;color:#C9B8C0}
   .step .dot{width:44px;height:44px;margin:0 auto 4px;border-radius:50%;background:#F1E6EB;
@@ -34,27 +33,43 @@
   .hero > *{position:relative}
   .hero .eyebrow{font-size:14px;font-weight:700;color:var(--muted)}
   .hero img{width:68%;max-width:250px;display:block;margin:4px auto 6px;border-radius:22px;mix-blend-mode:multiply}
-  .hero h1{font-size:30px;font-weight:900;letter-spacing:-.5px;color:var(--accent)}
+  .hero h1{font-size:30px;font-weight:900;letter-spacing:-.5px;color:var(--accent);line-height:1.3}
   .hero .emoji{font-size:26px;margin-right:4px}
-  .hero .desc{font-size:16px;font-weight:600;margin-top:6px}
-  .hero .sub{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--accent);
-             background:var(--accent-soft);padding:6px 12px;border-radius:999px}
+  .hero .combo{display:inline-block;margin-top:10px;font-size:15px;font-weight:800;color:#fff;
+               background:var(--accent);padding:7px 16px;border-radius:999px}
   .note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
 
-  /* 카드 공통 */
+  /* 카드 */
   .card{background:var(--card);border-radius:22px;padding:20px;margin-top:16px;box-shadow:0 4px 18px rgba(58,42,51,.06)}
-  .card h2{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .card h2{font-size:16px;font-weight:800;margin-bottom:12px}
   .card p{font-size:15px}
+  .muted{color:var(--muted);font-size:14px}
+  .tip{margin-top:14px;background:var(--accent-soft);border-radius:14px;padding:12px 14px;font-size:14px}
+  .tip b{color:var(--accent)}
 
   /* 막대 */
-  .bar{display:grid;grid-template-columns:72px 1fr;align-items:center;gap:10px;margin:10px 0}
-  .bar span{font-size:14px;font-weight:700}
-  .track{height:14px;background:#F5EDF1;border-radius:999px;overflow:hidden}
+  .bar{margin:12px 0}
+  .bar .lbl{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:5px}
+  .bar .lbl small{font-weight:500;color:var(--muted);font-size:12px;margin-left:4px}
+  .bar .pct{font-weight:800}
+  .track{height:12px;background:#F5EDF1;border-radius:999px;overflow:hidden}
   .fill{height:100%;border-radius:999px;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
 
+  /* 사진 */
+  .photos{display:flex;gap:8px;overflow-x:auto;margin:12px -4px 0;padding:0 4px 4px;scroll-snap-type:x mandatory}
+  .photos img{height:120px;border-radius:14px;flex-shrink:0;scroll-snap-align:start;object-fit:cover}
+
+  /* 원리 (접기) */
+  details{margin-top:12px;border-top:1px dashed #EADDE3;padding-top:10px}
+  summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--accent);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:" ▾"}
+  details[open] summary::after{content:" ▴"}
+  details p{font-size:14px;margin-top:8px;color:var(--ink)}
+
   /* 질문 */
-  .q{background:var(--accent-soft);border-radius:16px;padding:14px 16px;margin-top:10px;font-size:15px;font-weight:600;position:relative}
-  .q::before{content:"💬";margin-right:6px}
+  .q{background:var(--accent-soft);border-radius:16px;padding:12px 16px;margin-top:10px;font-size:15px;font-weight:600}
+  .q small{display:block;font-size:11px;font-weight:800;color:var(--accent);margin-bottom:2px}
 
   /* 다음 방문 */
   .next{display:flex;gap:14px;align-items:center}
@@ -74,7 +89,6 @@
   .empty img{width:60%;max-width:220px;mix-blend-mode:multiply}
   .empty h1{font-size:22px;margin-top:10px}
   .empty p{color:var(--muted);margin-top:6px}
-
   @media (prefers-reduced-motion:reduce){.fill{transition:none}}
 </style>
 </head>
@@ -82,44 +96,91 @@
 <main class="wrap" id="app"></main>
 
 <script>
-/* ───── 설정: 전시·유형 정보 (전시가 바뀌면 여기만 고치면 돼요) ───── */
-const MUSEUM_URL = "https://www.seoulchildrensmuseum.org";
+(() => {
+/* ═════════ 설정 (전시나 문구가 바뀌면 여기만 고치면 돼요) ═════════ */
+const SITE = "https://www.seoulchildrensmuseum.org";
+const RESERVE_URL = SITE + "/reservation/individualregistration.do";   // 개인 예약
+const PHOTOS_PER_FLOOR = 3;   // images/exhibits/2F-1.jpg, 2F-2.jpg … 없으면 자동으로 숨김
 
 const FLOORS = {
-  B1: { name:"그림책 작업실", icon:"🖍️", type:"story",
-        intro:"그리고 쓰면서 나만의 이야기를 만드는 곳" },
-  "1F": { name:"통-하다", icon:"💬", type:"heart",
-        intro:"표정·몸짓·말로 마음을 주고받는 곳" },
-  "2F": { name:"뿜뿜! 펀 에너지", icon:"⚡", type:"energy",
-        intro:"온몸으로 움직여 에너지를 만드는 곳" },
-  "3F": { name:"우리, 캠핑 가요!", icon:"🧭", type:"solver",
-        intro:"캠핑을 계획하고 문제를 해결하는 곳" },
+  B1:  { name:"그림책 작업실", icon:"🖍️", type:"story", url: SITE + "/display/displayExhibition28.do",
+         intro:"그리고 쓰면서 나만의 이야기를 만드는 곳",
+         principle:"그림책은 '시작 → 사건 → 끝'의 구조로 이루어져 있어요. 아이는 그림과 글로 자기 경험을 이야기로 엮으면서 생각을 순서대로 정리하는 연습을 했어요." },
+  "1F":{ name:"통-하다", icon:"💬", type:"heart", url: SITE + "/display/displayExhibition26.do",
+         intro:"표정·몸짓·말로 마음을 주고받는 곳",
+         principle:"마음은 말뿐 아니라 표정·눈빛·몸짓으로도 전해져요(비언어적 소통). 다른 사람의 신호를 읽고 내 마음을 전해 보는 경험이 공감하는 힘의 바탕이 돼요." },
+  "2F":{ name:"뿜뿜! 펀 에너지", icon:"⚡", type:"energy", url: SITE + "/display/displayExhibition05.do",
+         intro:"온몸으로 움직여 에너지를 만드는 곳",
+         principle:"페달을 밟거나 뛰는 몸의 움직임(운동 에너지)이 발전기를 돌리면 전기 에너지로 바뀌어요. 이렇게 에너지가 다른 형태로 바뀌는 것을 '에너지 전환'이라고 해요." },
+  "3F":{ name:"우리, 캠핑 가요!", icon:"🧭", type:"solver", url: SITE + "/display/displayExhibition08.do",
+         intro:"캠핑을 계획하고 문제를 해결하는 곳",
+         principle:"캠핑을 준비하려면 필요한 것을 고르고, 순서를 정하고, 예상 못 한 문제에 대처해야 해요. 이렇게 계획하고 조절하는 힘을 '실행 기능'이라고 불러요." },
 };
 const FLOOR_ORDER = ["B1","1F","2F","3F"];
 
 const TYPES = {
-  energy: { name:"뿜뿜 발전가", emoji:"🏃", area:"움직이기", color:"#F28A2E", soft:"#FFEBD8",
-            desc:"온몸으로 움직이며 힘을 만들었어요",
-            q:["오늘 몸으로 어떤 에너지를 만들었어?","우리 집에서도 몸으로 불을 켤 수 있을까?"],
-            sheet: MUSEUM_URL },
-  solver: { name:"척척 해결사", emoji:"🧭", area:"알아내기", color:"#5E9B5A", soft:"#E3F1DF",
-            desc:"계획하고 문제를 풀며 놀았어요",
-            q:["캠핑 갈 때 딱 3개만 챙긴다면 뭘 가져갈래?","하나를 깜빡하면 어떻게 할까?"],
-            sheet: MUSEUM_URL },
-  story:  { name:"이야기꾼", emoji:"🖍️", area:"표현하기", color:"#8E63CF", soft:"#EEE5FA",
-            desc:"나만의 이야기와 마음을 표현했어요",
-            q:["오늘 그림책 작업실에서 어떤 이야기를 만들었어?","그 다음엔 무슨 일이 생길까?"],
-            sheet: MUSEUM_URL },
-  heart:  { name:"마음 통역가", emoji:"💬", area:"함께하기", color:"#E0558C", soft:"#FFE3EE",
-            desc:"다른 사람과 마음을 주고받았어요",
-            q:["오늘 표정이나 몸짓으로 마음을 전해 봤어?","지금 엄마 아빠 얼굴은 어떤 기분 같아?"],
-            sheet: MUSEUM_URL },
+  energy:{ name:"뿜뿜 발전가", emoji:"🏃", floor:"2F", color:"#F28A2E", soft:"#FFEBD8",
+           bar:"몸으로 움직이기", barHint:"뛰고, 돌리고, 춤추기",
+           q:[["떠올리기","오늘 몸으로 어떤 에너지를 만들었어?"],["한 걸음 더","우리 집에서도 몸으로 불을 켤 수 있을까?"]],
+           why:"첫 질문은 오늘 한 일을 말로 떠올리게 해서 기억을 단단하게 만들어요. 두 번째 질문은 '움직임 → 전기'라는 에너지 전환 원리를 집이라는 새로운 상황에 적용해 보게 해요." },
+  solver:{ name:"척척 해결사", emoji:"🧭", floor:"3F", color:"#5E9B5A", soft:"#E3F1DF",
+           bar:"생각하고 해결하기", barHint:"계획하고, 고르고, 문제 풀기",
+           q:[["떠올리기","캠핑 갈 때 딱 3개만 챙긴다면 뭘 가져갈래?"],["한 걸음 더","하나를 깜빡하면 어떻게 할까?"]],
+           why:"'딱 3개'처럼 조건이 있으면 무엇이 더 중요한지 비교하고 고르게 돼요(우선순위). '깜빡하면?'은 계획이 틀어졌을 때 다른 방법을 찾는 문제 해결 연습이에요." },
+  story: { name:"이야기꾼", emoji:"🖍️", floor:"B1", color:"#8E63CF", soft:"#EEE5FA",
+           bar:"이야기·마음 표현하기", barHint:"그리고, 쓰고, 꾸며 보기",
+           q:[["떠올리기","오늘 그림책 작업실에서 어떤 이야기를 만들었어?"],["한 걸음 더","그 다음엔 무슨 일이 생길까?"]],
+           why:"자기가 만든 이야기를 다시 말해 보는 건 생각을 순서대로 정리하는 연습이에요. '그 다음엔?'은 이야기의 구조를 이어 가게 해서 읽고 쓰는 힘(문해력)의 바탕이 돼요." },
+  heart: { name:"마음 통역가", emoji:"💬", floor:"1F", color:"#E0558C", soft:"#FFE3EE",
+           bar:"다른 사람과 함께하기", barHint:"마음 주고받고, 힘 모으기",
+           q:[["떠올리기","오늘 표정이나 몸짓으로 마음을 전해 봤어?"],["한 걸음 더","지금 엄마 아빠 얼굴은 어떤 기분 같아?"]],
+           why:"말 없이도 마음을 전할 수 있다는 걸 다시 떠올려요. 가족의 표정을 보고 기분을 짐작해 보는 건 다른 사람의 마음을 헤아리는 힘(공감)을 키우는 연습이에요." },
 };
 const BAR_ORDER = ["energy","solver","story","heart"];   // URL b= 값의 순서
 
-/* ───── URL 읽기 (정해진 값만 받아들임) ───── */
+/* 1등 + 2등 조합 설명 (12가지) */
+const COMBOS = {
+  "energy-solver":{ title:"움직이며 궁리하는 발명가",
+    desc:"몸을 움직여 직접 해 보고, 어떻게 하면 더 잘 될지 궁리하며 놀았어요. '더 빨리 돌리면 불이 더 밝아질까?'처럼 몸으로 실험하는 놀이에 푹 빠졌어요.",
+    tip:"'어떻게 하면 더 멀리 던질까?'처럼 몸으로 하는 작은 실험을 같이 해 보세요." },
+  "energy-story":{ title:"온몸으로 표현하는 무용가",
+    desc:"크게 움직이면서 기분과 상상을 몸짓으로 드러냈어요. 뛰고 춤추는 순간 자체가 아이만의 이야기였어요.",
+    tip:"좋아하는 노래에 맞춰 '신나는 춤, 졸린 춤'처럼 기분을 몸으로 표현해 보세요." },
+  "energy-heart":{ title:"함께 달리는 팀 플레이어",
+    desc:"다른 사람과 힘을 모아 움직이는 놀이를 즐겼어요. 여럿이 같이 해야 움직이는 놀이에서 특히 신이 났어요.",
+    tip:"이인삼각, 손잡고 균형 잡기처럼 둘이 함께해야 되는 몸 놀이를 해 보세요." },
+  "solver-energy":{ title:"직접 해 보는 탐험가",
+    desc:"계획을 세우고 몸으로 직접 부딪혀 확인하며 놀았어요. 텐트 치기처럼 머리와 손발을 같이 쓰는 활동에 오래 머물렀어요.",
+    tip:"이불과 의자로 집 안에 텐트를 만들어 보세요. 순서를 아이가 정하게 해 주세요." },
+  "solver-story":{ title:"이야기를 짓는 꼬마 설계자",
+    desc:"차근차근 순서를 정하고, 그 과정을 이야기로 엮었어요. '먼저 이걸 하고, 그다음엔…'처럼 계획과 상상을 함께 쓰며 놀았어요.",
+    tip:"다음 주말 나들이 계획을 그림 일기처럼 같이 그려 보세요." },
+  "solver-heart":{ title:"함께 머리를 맞대는 해결사",
+    desc:"다른 사람과 생각을 나누며 문제를 풀었어요. 역할을 나누고 함께 정하는 놀이에서 빛났어요.",
+    tip:"저녁 메뉴나 장보기 목록을 아이와 의논해서 같이 정해 보세요." },
+  "story-energy":{ title:"몸으로 이야기하는 배우",
+    desc:"상상한 이야기를 몸짓과 움직임으로 펼쳤어요. 이야기 속 주인공이 되어 직접 움직이는 걸 좋아했어요.",
+    tip:"그림책 한 장면을 골라 몸으로 따라 하는 역할놀이를 해 보세요." },
+  "story-solver":{ title:"생각을 그리는 작가",
+    desc:"이야기를 이리저리 짜 맞추며 나만의 장면을 만들었어요. '만약에 ~라면?'을 떠올리는 놀이에 오래 머물렀어요.",
+    tip:"아는 동화의 결말을 아이와 함께 새로 바꿔 지어 보세요." },
+  "story-heart":{ title:"마음을 나누는 이야기꾼",
+    desc:"나의 이야기와 감정을 표현하고 다른 사람과 나눴어요. 내 마음을 그림과 말로 꺼내 보는 시간을 즐겼어요.",
+    tip:"잠들기 전에 '오늘의 기분 한 가지'를 서로 이야기해 보세요." },
+  "heart-energy":{ title:"몸짓으로 통하는 친구",
+    desc:"표정과 몸짓으로 다른 사람과 신호를 주고받았어요. 함께 움직이며 마음을 맞추는 놀이에 푹 빠졌어요.",
+    tip:"말 없이 몸짓으로만 단어를 맞히는 놀이를 해 보세요." },
+  "heart-solver":{ title:"생각을 모으는 조율사",
+    desc:"다른 사람의 생각을 듣고 함께 좋은 방법을 찾았어요. '어떻게 하면 모두 공평할까?' 같은 고민에 오래 머물렀어요.",
+    tip:"간식을 공평하게 나누는 방법을 아이가 직접 정해 보게 해 주세요." },
+  "heart-story":{ title:"마음을 읽는 통역가",
+    desc:"다른 사람의 표정과 마음을 읽고, 내 마음도 말로 표현했어요. 마음을 주고받는 놀이에서 가장 즐거워했어요.",
+    tip:"그림책을 읽다가 '이 친구는 지금 어떤 기분일까?' 하고 물어봐 주세요." },
+};
+
+/* ═════════ URL 읽기 (정해진 값만 받아들임) ═════════ */
 const P = new URLSearchParams(location.search);
-const pick = (k, allowed) => allowed.includes(P.get(k)) ? P.get(k) : null;
+const pick = (k, ok) => ok.includes(P.get(k)) ? P.get(k) : null;
 const type = pick("type", Object.keys(TYPES));
 const sub  = pick("sub",  Object.keys(TYPES));
 const topF = pick("top",  FLOOR_ORDER);
@@ -139,87 +200,114 @@ if (!type) {
       <h1>놀이 발자국</h1>
       <p>출구 스테이션에서 카드를 태그하고<br>QR을 찍으면 오늘의 놀이 유형이 나와요.</p>
     </div>`;
-} else {
-  const T = TYPES[type], S = sub ? TYPES[sub] : null;
-  document.documentElement.style.setProperty("--accent", T.color);
-  document.documentElement.style.setProperty("--accent-soft", T.soft);
-
-  const steps = FLOOR_ORDER.map(f => {
-    const on = visited.length ? visited.includes(f) : false;
-    return `<div class="step ${on ? "on" : ""}"><div class="dot">${FLOORS[f].icon}</div>${f}</div>`;
-  }).join("");
-  const cheer = n >= 4 ? "🎉 발자국을 모두 모았어요!" : n > 0 ? `발자국 ${n}개나 모았어요!` : "";
-
-  const title = both && S ? `${T.name}<br><span style="font-size:20px">이면서</span> ${S.name}` : T.name;
-  const subLine = !both && S ? `<div class="sub">${S.area}도 많이 했어요</div>` : "";
-
-  const barHtml = bars.length === 4 && bars.some(x => x > 0) ? `
-    <section class="card">
-      <h2>📊 오늘 많이 한 놀이</h2>
-      ${BAR_ORDER.map((k,i) => `
-        <div class="bar"><span>${TYPES[k].area}</span>
-          <div class="track"><div class="fill" data-w="${Math.max(6, bars[i])}" style="background:${TYPES[k].color}"></div></div>
-        </div>`).join("")}
-    </section>` : "";
-
-  const topHtml = topF ? `
-    <section class="card">
-      <h2>⭐ 가장 푹 빠져 있던 곳</h2>
-      <p><b>${topF} ${FLOORS[topF].name}</b><br><span style="color:var(--muted);font-size:14px">${FLOORS[topF].intro}</span></p>
-    </section>` : "";
-
-  const nextHtml = nextF ? `
-    <section class="card">
-      <h2>🚀 다음엔 이것도 도전!</h2>
-      <div class="next">
-        <img src="${img(FLOORS[nextF].type)}" alt="${FLOORS[nextF].name} 공룡">
-        <div>
-          <div class="floor">${nextF} · ${visited.includes(nextF) ? "다음엔 더 오래 놀아 보기" : "오늘 못 해 본 놀이"}</div>
-          <div class="name">${FLOORS[nextF].name}</div>
-          <p>${FLOORS[nextF].intro}</p>
-        </div>
-      </div>
-      <a class="btn ghost" href="${MUSEUM_URL}" target="_blank" rel="noopener">다음 방문 예약하기</a>
-    </section>` : "";
-
-  app.innerHTML = `
-    <div class="top"><span>서울상상나라</span><b>놀이 발자국</b></div>
-    ${visited.length ? `<div class="steps">${steps}</div>` : ""}
-    ${cheer ? `<div class="cheer">${cheer}</div>` : ""}
-
-    <section class="hero">
-      <div class="eyebrow">오늘 우리 아이는</div>
-      <img src="${img(type)}" alt="${T.name} 공룡">
-      <h1><span class="emoji">${T.emoji}</span>${title}</h1>
-      <div class="desc">${T.desc}</div>
-      ${subLine}
-    </section>
-    <p class="note">성격 진단이 아니라 <b>오늘의 놀이 방식</b>이에요. 다음엔 다른 유형이 나올 수도 있어요!</p>
-
-    ${barHtml}
-    ${topHtml}
-
-    <section class="card">
-      <h2>🚗 집 가는 길에 물어봐 주세요</h2>
-      ${T.q.map(x => `<div class="q">${x}</div>`).join("")}
-    </section>
-
-    <section class="card">
-      <h2>🏠 집에서 이어서 놀기</h2>
-      <p>오늘 즐긴 놀이를 집에서도 해 볼 수 있는 박물관 워크시트예요.</p>
-      <a class="btn" href="${T.sheet}" target="_blank" rel="noopener">워크시트 보러 가기</a>
-    </section>
-
-    ${nextHtml}
-
-    <footer>
-      <div class="logo">🦖 놀이 발자국</div>
-      카메라 없이 카드 번호와 시간만 사용했어요.<br>이 결과는 어디에도 저장되지 않아요.
-    </footer>`;
-
-  requestAnimationFrame(() => setTimeout(() =>
-    document.querySelectorAll(".fill").forEach(el => el.style.width = el.dataset.w + "%"), 150));
+  return;
 }
+
+const T = TYPES[type], S = sub && sub !== type ? TYPES[sub] : null;
+const C = S ? COMBOS[`${type}-${sub}`] : null;
+document.documentElement.style.setProperty("--accent", T.color);
+document.documentElement.style.setProperty("--accent-soft", T.soft);
+
+/* 발자국 */
+const steps = FLOOR_ORDER.map(f =>
+  `<div class="step ${visited.includes(f) ? "on" : ""}"><div class="dot">${FLOORS[f].icon}</div>${f}</div>`).join("");
+const cheer = n >= 4 ? "🎉 발자국을 모두 모았어요!" : n > 0 ? `발자국 ${n}개나 모았어요!` : "";
+
+/* 메인 */
+const title = both && S ? `${T.name}<br><span style="font-size:20px">이면서</span> ${S.name}` : T.name;
+
+/* 막대: 오늘 놀이 중 차지한 비율(%) */
+let barHtml = "";
+if (bars.length === 4 && bars.some(x => x > 0)) {
+  const sum = bars.reduce((a, b) => a + b, 0);
+  const pct = bars.map(x => Math.round(x / sum * 100));
+  barHtml = `
+  <section class="card">
+    <h2>📊 오늘 이렇게 놀았어요</h2>
+    ${BAR_ORDER.map((k, i) => `
+      <div class="bar">
+        <div class="lbl"><span>${TYPES[k].bar}<small>${TYPES[k].barHint}</small></span><span class="pct" style="color:${TYPES[k].color}">${pct[i]}%</span></div>
+        <div class="track"><div class="fill" data-w="${Math.max(4, pct[i] / Math.max(...pct) * 100)}" style="background:${TYPES[k].color}"></div></div>
+      </div>`).join("")}
+    <p class="muted" style="margin-top:8px">전시마다 머문 시간을 바탕으로, 오늘 놀이 중 어떤 놀이가 얼마나 많았는지 나타냈어요.</p>
+  </section>`;
+}
+
+/* 가장 빠져 있던 곳 + 사진 + 원리 */
+const photoHtml = f => Array.from({ length: PHOTOS_PER_FLOOR }, (_, i) =>
+  `<img src="images/exhibits/${f}-${i + 1}.jpg" alt="${FLOORS[f].name} 사진 ${i + 1}" loading="lazy" onerror="this.remove()">`).join("");
+const topHtml = topF ? `
+  <section class="card">
+    <h2>⭐ 가장 푹 빠져 있던 곳</h2>
+    <p><b>${topF} ${FLOORS[topF].name}</b><br><span class="muted">${FLOORS[topF].intro}</span></p>
+    <div class="photos">${photoHtml(topF)}</div>
+    <details><summary>💡 이 전시에 숨은 원리</summary><p>${FLOORS[topF].principle}</p></details>
+  </section>` : "";
+
+/* 다음 방문 */
+const nextHtml = nextF ? `
+  <section class="card">
+    <h2>🚀 다음엔 이것도 도전!</h2>
+    <div class="next">
+      <img src="${img(FLOORS[nextF].type)}" alt="${FLOORS[nextF].name} 공룡">
+      <div>
+        <div class="floor">${nextF} · ${visited.includes(nextF) ? "다음엔 더 오래 놀아 보기" : "오늘 못 해 본 놀이"}</div>
+        <div class="name">${FLOORS[nextF].name}</div>
+        <p>${FLOORS[nextF].intro}</p>
+      </div>
+    </div>
+    <a class="btn ghost" href="${RESERVE_URL}" target="_blank" rel="noopener">다음 방문 예약하기</a>
+  </section>` : "";
+
+const sheetFloor = FLOORS[T.floor];
+
+app.innerHTML = `
+  <div class="top"><span>서울상상나라</span><b>놀이 발자국</b></div>
+  ${visited.length ? `<div class="steps">${steps}</div>` : ""}
+  ${cheer ? `<div class="cheer">${cheer}</div>` : ""}
+
+  <section class="hero">
+    <div class="eyebrow">오늘 우리 아이는</div>
+    <img src="${img(type)}" alt="${T.name} 공룡">
+    <h1><span class="emoji">${T.emoji}</span>${title}</h1>
+    ${C ? `<div class="combo">${C.title}</div>` : ""}
+  </section>
+  <p class="note">성격 진단이 아니라 <b>오늘의 놀이 방식</b>이에요.<br>다음엔 다른 유형이 나올 수도 있어요!</p>
+
+  ${C ? `
+  <section class="card">
+    <h2>🦖 ${C.title}</h2>
+    <p>${C.desc}</p>
+    <div class="tip"><b>집에서는 이렇게</b><br>${C.tip}</div>
+  </section>` : ""}
+
+  ${barHtml}
+  ${topHtml}
+
+  <section class="card">
+    <h2>🚗 집 가는 길에 물어봐 주세요</h2>
+    ${T.q.map(([tag, text]) => `<div class="q"><small>${tag}</small>${text}</div>`).join("")}
+    <details><summary>💡 왜 이 질문일까요?</summary><p>${T.why}</p></details>
+  </section>
+
+  <section class="card">
+    <h2>🏠 집에서 이어서 놀기</h2>
+    <p>${sheetFloor.name} 전시 페이지에서 집에서 해 볼 수 있는 워크시트를 내려받을 수 있어요.</p>
+    <a class="btn" href="${sheetFloor.url}" target="_blank" rel="noopener">워크시트 보러 가기</a>
+  </section>
+
+  ${nextHtml}
+
+  <footer>
+    <div class="logo">🦖 놀이 발자국</div>
+    카메라 없이 카드 번호와 시간만 사용했어요.<br>이 결과는 어디에도 저장되지 않아요.
+  </footer>`;
+
+/* 사진이 하나도 없으면 사진 칸 숨김 */
+setTimeout(() => document.querySelectorAll(".photos").forEach(el => { if (!el.querySelector("img")) el.remove(); }), 1500);
+requestAnimationFrame(() => setTimeout(() =>
+  document.querySelectorAll(".fill").forEach(el => el.style.width = el.dataset.w + "%"), 150));
+})();
 </script>
 </body>
 </html>
