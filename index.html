@@ -8,11 +8,11 @@
 <style>
   :root{
     --pink:#F2679A; --pink-soft:#FFE3EE; --ink:#3A2A33; --muted:#8B7781; --bg:#FFF7FA; --card:#FFFFFF;
-    --accent:var(--pink); --accent-soft:var(--pink-soft);
+    --accent:var(--pink); --accent-ink:var(--pink); --accent-soft:var(--pink-soft); --accent2:var(--pink); --accent2-soft:var(--pink-soft);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-       background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
+       background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;word-break:keep-all}
   .wrap{max-width:480px;margin:0 auto;padding:20px 18px 40px}
   .top{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:600}
   .top b{color:var(--pink)}
@@ -20,32 +20,58 @@
   /* 발자국 스탬프 */
   .steps{display:flex;gap:8px;justify-content:center;margin:18px 0 6px}
   .step{width:62px;text-align:center;font-size:12px;font-weight:700;color:#C9B8C0}
-  .step .dot{width:44px;height:44px;margin:0 auto 4px;border-radius:50%;background:#F1E6EB;
-             display:grid;place-items:center;font-size:20px;filter:grayscale(1);opacity:.55}
-  .step.on{color:var(--pink)}
-  .step.on .dot{background:var(--pink-soft);filter:none;opacity:1;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--pink)}
+  .step .dot{width:44px;height:44px;margin:0 auto 4px;border-radius:50%;background:#F1E6EB;color:#B9A9B1;
+             display:grid;place-items:center;filter:grayscale(1);opacity:.6}
+  .step .dot svg{width:22px;height:22px}
+  .step .dot img{width:40px;height:40px;object-fit:contain}
+  .step.on .dot{color:var(--sc)}
+  .step.on{color:var(--sc)}
+  .step.on .dot{background:var(--ss);filter:none;opacity:1;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--sc)}
   .cheer{text-align:center;font-weight:800;font-size:15px;color:var(--pink);margin-bottom:8px}
 
-  /* 메인 */
-  .hero{background:var(--card);border-radius:28px;padding:22px 20px 24px;text-align:center;
-        box-shadow:0 8px 30px rgba(242,103,154,.15);position:relative;overflow:hidden}
-  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--accent-soft) 0%,var(--accent-soft) 62%,#fff 100%)}
-  .hero > *{position:relative}
+  /* 메인 — 1등 색 → 2등 색 그라데이션 */
+  .hero{border-radius:28px;padding:22px 20px 24px;text-align:center;position:relative;overflow:hidden;
+        background:linear-gradient(160deg,var(--accent-soft) 0%,var(--accent-soft) 45%,var(--accent2-soft) 100%);
+        box-shadow:0 8px 30px rgba(58,42,51,.10)}
+  .hero > *{position:relative;z-index:1}
+  .blob{position:absolute!important;z-index:0!important;border-radius:50%;filter:blur(18px);opacity:.55;pointer-events:none}
+  .spark{position:absolute!important;z-index:0!important;pointer-events:none;opacity:.9}
+  .spark svg{display:block;width:100%;height:100%}
   .hero .eyebrow{font-size:14px;font-weight:700;color:var(--muted)}
-  .hero img{width:68%;max-width:250px;display:block;margin:4px auto 6px;border-radius:22px;mix-blend-mode:multiply}
-  .hero h1{font-size:30px;font-weight:900;letter-spacing:-.5px;color:var(--accent);line-height:1.3}
-  .hero .emoji{font-size:26px;margin-right:4px}
-  .hero .combo{display:inline-block;margin-top:10px;font-size:15px;font-weight:800;color:#fff;
-               background:var(--accent);padding:7px 16px;border-radius:999px}
+  .hero img{width:66%;max-width:240px;display:block;margin:4px auto 6px;mix-blend-mode:multiply}
+  .hero h1{font-size:30px;font-weight:900;letter-spacing:-.5px;color:var(--accent-ink);line-height:1.3}
+  .hicon{display:inline-block;width:.9em;height:.9em;vertical-align:-.08em;margin-right:6px}
+  .hicon svg{width:100%;height:100%}
+  .combo{display:inline-block;margin-top:10px;font-size:16px;font-weight:800;color:#fff;padding:8px 18px;border-radius:999px;
+         text-shadow:0 1px 2px rgba(0,0,0,.18);background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 4px 12px rgba(0,0,0,.10)}
+  .pureTag{display:inline-block;font-size:12px;font-weight:800;color:var(--accent-ink);margin-top:10px;
+           background:#fff;border:2px solid var(--accent);padding:3px 12px;border-radius:999px}
+  /* 집중형: 희귀 카드 느낌 */
+  .hero.pure{background:radial-gradient(circle at 50% 36%,#fff 0%,var(--accent-soft) 42%,color-mix(in srgb,var(--accent) 30%,var(--accent-soft)) 100%);
+             box-shadow:0 0 0 3px #fff,0 0 0 6px var(--accent),0 12px 34px color-mix(in srgb,var(--accent) 35%,transparent)}
+  .hero.pure::before{content:"";position:absolute;inset:-40%;z-index:0;opacity:.22;
+             background:repeating-conic-gradient(from 0deg at 50% 50%,#fff 0deg 8deg,transparent 8deg 24deg);
+             animation:spin 40s linear infinite}
+  .hero.pure .combo{background:linear-gradient(110deg,var(--accent) 0%,var(--accent) 38%,#fff8 50%,var(--accent) 62%,var(--accent) 100%);
+             background-size:250% 100%;animation:shine 3.2s ease-in-out infinite}
+  .spark{animation:twinkle 2.6s ease-in-out infinite}
+  .spark:nth-of-type(2n){animation-delay:1.3s}
+  .hero.pure .spark{animation-duration:1.8s}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes shine{0%{background-position:100% 0}60%,100%{background-position:-50% 0}}
+  @keyframes twinkle{0%,100%{opacity:.35;scale:.8}50%{opacity:1;scale:1.1}}
+  .slogan{font-size:16px;font-weight:700;margin-top:12px}
+  .tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .tags span{font-size:12px;font-weight:700;color:var(--accent-ink);background:#ffffffcc;padding:4px 10px;border-radius:999px}
   .note{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
 
   /* 카드 */
   .card{background:var(--card);border-radius:22px;padding:20px;margin-top:16px;box-shadow:0 4px 18px rgba(58,42,51,.06)}
-  .card h2{font-size:16px;font-weight:800;margin-bottom:12px}
+  .card h2{font-size:17px;font-weight:800;margin-bottom:4px}
+  .card .lead{font-size:13px;color:var(--muted);margin-bottom:12px}
   .card p{font-size:15px}
   .muted{color:var(--muted);font-size:14px}
-  .tip{margin-top:14px;background:var(--accent-soft);border-radius:14px;padding:12px 14px;font-size:14px}
-  .tip b{color:var(--accent)}
+  h3{font-size:15px;font-weight:800;margin:16px 0 6px}
 
   /* 막대 */
   .bar{margin:12px 0}
@@ -55,21 +81,48 @@
   .track{height:12px;background:#F5EDF1;border-radius:999px;overflow:hidden}
   .fill{height:100%;border-radius:999px;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
 
+  /* 영역 설명 */
+  .dom{border-radius:18px;padding:16px;margin-top:12px}
+  .dom .rank{font-size:12px;font-weight:800}
+  .dom .dname{font-size:17px;font-weight:900;margin:2px 0 6px}
+  .dom p{font-size:14.5px;margin-top:6px}
+  .dom .where{font-weight:700}
+  .rest{font-size:14px;color:var(--muted);margin-top:12px;padding-left:2px}
+  .rest b{color:var(--ink)}
+
+  /* 더 보기 */
+  .clamp{max-height:150px;overflow:hidden;position:relative;transition:max-height .4s ease}
+  .clamp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(transparent,var(--fade,#fff))}
+  .clamp.open{max-height:2000px}
+  .clamp.open::after{display:none}
+  .moreBtn{display:block;width:100%;margin-top:8px;padding:8px;border:0;background:none;color:var(--accent-ink);font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+
+  /* 유형 상세 */
+  ul.scenes{list-style:none;margin-top:4px}
+  ul.scenes li{font-size:15px;padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed #F0E4E9}
+  ul.scenes li:last-child{border:0}
+  ul.scenes li::before{content:"👀";position:absolute;left:0;top:8px;font-size:14px}
+  .tip{margin-top:10px;background:var(--accent-soft);border-radius:14px;padding:12px 14px;font-size:14.5px}
+  .tip b{color:var(--accent-ink)}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .pair div{border-radius:14px;padding:12px;background:#FAF5F7;font-size:13px}
+  .pair b{display:block;font-size:14.5px;margin-top:2px}
+
   /* 사진 */
   .photos{display:flex;gap:8px;overflow-x:auto;margin:12px -4px 0;padding:0 4px 4px;scroll-snap-type:x mandatory}
   .photos img{height:120px;border-radius:14px;flex-shrink:0;scroll-snap-align:start;object-fit:cover}
 
-  /* 원리 (접기) */
+  /* 접기 */
   details{margin-top:12px;border-top:1px dashed #EADDE3;padding-top:10px}
-  summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--accent);list-style:none}
+  summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--accent-ink);list-style:none}
   summary::-webkit-details-marker{display:none}
   summary::after{content:" ▾"}
   details[open] summary::after{content:" ▴"}
-  details p{font-size:14px;margin-top:8px;color:var(--ink)}
+  details p{font-size:14px;margin-top:8px}
 
   /* 질문 */
   .q{background:var(--accent-soft);border-radius:16px;padding:12px 16px;margin-top:10px;font-size:15px;font-weight:600}
-  .q small{display:block;font-size:11px;font-weight:800;color:var(--accent);margin-bottom:2px}
+  .q small{display:block;font-size:11px;font-weight:800;color:var(--accent-ink);margin-bottom:2px}
 
   /* 다음 방문 */
   .next{display:flex;gap:14px;align-items:center}
@@ -79,17 +132,16 @@
   .next p{font-size:14px;color:var(--muted);margin-top:2px}
 
   .btn{display:block;text-align:center;margin-top:14px;padding:14px;border-radius:16px;
-       background:var(--accent);color:#fff;font-weight:800;text-decoration:none;font-size:15px}
-  .btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+       background:var(--accent-ink);color:#fff;font-weight:800;text-decoration:none;font-size:15px}
+  .btn.ghost{background:transparent;color:var(--accent-ink);border:2px solid var(--accent-ink)}
 
   footer{margin-top:26px;text-align:center;font-size:12px;color:var(--muted)}
   footer .logo{font-weight:800;color:var(--pink);font-size:14px;margin-bottom:4px}
-
   .empty{text-align:center;padding:60px 10px}
   .empty img{width:60%;max-width:220px;mix-blend-mode:multiply}
   .empty h1{font-size:22px;margin-top:10px}
   .empty p{color:var(--muted);margin-top:6px}
-  @media (prefers-reduced-motion:reduce){.fill{transition:none}}
+  @media (prefers-reduced-motion:reduce){.fill,.clamp{transition:none}.hero.pure::before,.hero.pure .combo,.spark{animation:none}}
 </style>
 </head>
 <body>
@@ -97,10 +149,10 @@
 
 <script>
 (() => {
-/* ═════════ 설정 (전시나 문구가 바뀌면 여기만 고치면 돼요) ═════════ */
+/* ═════════════ 설정 (전시나 문구가 바뀌면 여기만 고치면 돼요) ═════════════ */
 const SITE = "https://www.seoulchildrensmuseum.org";
-const RESERVE_URL = SITE + "/reservation/individualregistration.do";   // 개인 예약
-const PHOTOS_PER_FLOOR = 3;   // images/exhibits/2F-1.jpg, 2F-2.jpg … 없으면 자동으로 숨김
+const RESERVE_URL = SITE + "/reservation/individualregistration.do";
+const PHOTOS_PER_FLOOR = 3;   // images/exhibits/2F-1.jpg … 없으면 자동으로 숨김
 
 const FLOORS = {
   B1:  { name:"그림책 작업실", icon:"🖍️", type:"story", url: SITE + "/display/displayExhibition28.do",
@@ -117,138 +169,260 @@ const FLOORS = {
          principle:"캠핑을 준비하려면 필요한 것을 고르고, 순서를 정하고, 예상 못 한 문제에 대처해야 해요. 이렇게 계획하고 조절하는 힘을 '실행 기능'이라고 불러요." },
 };
 const FLOOR_ORDER = ["B1","1F","2F","3F"];
+const svgWrap = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const ICONS = {
+  B1:  svgWrap('<path d="M4 20l1.2-4.2L15.6 5.4a2 2 0 0 1 2.8 0l.2.2a2 2 0 0 1 0 2.8L8.2 18.8z"/><path d="M13.8 7.2l3 3"/>'),
+  "1F":svgWrap('<path d="M5 5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/>'),
+  "2F":svgWrap('<path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/>'),
+  "3F":svgWrap('<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'),
+};
+const stampIcon = f => `<img src="images/icons/${f}.png" alt="" onerror="this.insertAdjacentHTML('afterend', ICONS_SRC['${f}']);this.remove()">`;
+window.ICONS_SRC = ICONS;
 
+/* 4가지 놀이 영역 (MBTI의 '축' 설명 역할) */
 const TYPES = {
-  energy:{ name:"뿜뿜 발전가", emoji:"🏃", floor:"2F", color:"#F28A2E", soft:"#FFEBD8",
+  energy:{ name:"뿜뿜 발전가", emoji:"🏃", deco:"⚡", floor:"2F", color:"#FF9A3C", ink:"#DB6E0F", soft:"#FFEEDC",
            bar:"몸으로 움직이기", barHint:"뛰고, 돌리고, 춤추기",
+           what:"뛰고, 밀고, 돌리면서 온몸으로 세상을 알아가는 놀이예요.",
+           look:"이 놀이를 할 때 아이들은 '한 번 더!'를 외치며 같은 동작을 반복하고, 더 세게·더 빨리 해 보면서 자기 몸을 조절해 봐요.",
+           grow:"대근육을 쓰는 놀이는 몸의 균형과 조절 능력을 키우고, '내가 해냈다'는 경험이 자신감으로 이어져요.",
            q:[["떠올리기","오늘 몸으로 어떤 에너지를 만들었어?"],["한 걸음 더","우리 집에서도 몸으로 불을 켤 수 있을까?"]],
            why:"첫 질문은 오늘 한 일을 말로 떠올리게 해서 기억을 단단하게 만들어요. 두 번째 질문은 '움직임 → 전기'라는 에너지 전환 원리를 집이라는 새로운 상황에 적용해 보게 해요." },
-  solver:{ name:"척척 해결사", emoji:"🧭", floor:"3F", color:"#5E9B5A", soft:"#E3F1DF",
+  solver:{ name:"척척 해결사", emoji:"🧭", deco:"🔍", floor:"3F", color:"#8CCB3F", ink:"#5A9414", soft:"#F0F8E0",
            bar:"생각하고 해결하기", barHint:"계획하고, 고르고, 문제 풀기",
+           what:"계획하고, 고르고, 문제를 풀면서 머리로 세상을 알아가는 놀이예요.",
+           look:"이 놀이를 할 때 아이들은 '이건 왜 그래?', '이렇게 하면 어때?' 하고 묻고, 순서를 정하거나 방법을 바꿔 보며 놀아요.",
+           grow:"필요한 것을 고르고 계획대로 해 보는 경험은 생각을 정리하고 스스로 조절하는 힘(실행 기능)을 키워요.",
            q:[["떠올리기","캠핑 갈 때 딱 3개만 챙긴다면 뭘 가져갈래?"],["한 걸음 더","하나를 깜빡하면 어떻게 할까?"]],
            why:"'딱 3개'처럼 조건이 있으면 무엇이 더 중요한지 비교하고 고르게 돼요(우선순위). '깜빡하면?'은 계획이 틀어졌을 때 다른 방법을 찾는 문제 해결 연습이에요." },
-  story: { name:"이야기꾼", emoji:"🖍️", floor:"B1", color:"#8E63CF", soft:"#EEE5FA",
+  story: { name:"이야기꾼", emoji:"🖍️", deco:"📖", floor:"B1", color:"#BC73E0", ink:"#9145BF", soft:"#F6EBFC",
            bar:"이야기·마음 표현하기", barHint:"그리고, 쓰고, 꾸며 보기",
+           what:"그리고, 쓰고, 꾸며 보면서 내 이야기와 마음을 밖으로 꺼내는 놀이예요.",
+           look:"이 놀이를 할 때 아이들은 자기 경험을 그림이나 말로 옮기고, '그래서 이렇게 됐어!' 하며 이야기를 덧붙여 나가요.",
+           grow:"생각과 감정을 이야기로 정리하는 경험은 표현력과 문해력의 바탕이 되고, 내 마음을 알아차리는 힘도 길러 줘요.",
            q:[["떠올리기","오늘 그림책 작업실에서 어떤 이야기를 만들었어?"],["한 걸음 더","그 다음엔 무슨 일이 생길까?"]],
            why:"자기가 만든 이야기를 다시 말해 보는 건 생각을 순서대로 정리하는 연습이에요. '그 다음엔?'은 이야기의 구조를 이어 가게 해서 읽고 쓰는 힘(문해력)의 바탕이 돼요." },
-  heart: { name:"마음 통역가", emoji:"💬", floor:"1F", color:"#E0558C", soft:"#FFE3EE",
+  heart: { name:"마음 통역가", emoji:"💬", deco:"💙", floor:"1F", color:"#4A9DFF", ink:"#2477DD", soft:"#E3F0FF",
            bar:"다른 사람과 함께하기", barHint:"마음 주고받고, 힘 모으기",
+           what:"표정·몸짓·말로 다른 사람과 마음을 주고받고, 힘을 모으는 놀이예요.",
+           look:"이 놀이를 할 때 아이들은 '같이 하자!' 하고 손을 내밀거나, 다른 사람의 표정을 살피며 움직임을 맞춰요.",
+           grow:"다른 사람의 마음을 헤아리고 함께 해내는 경험은 공감하는 힘과 협력하는 힘을 키워요.",
            q:[["떠올리기","오늘 표정이나 몸짓으로 마음을 전해 봤어?"],["한 걸음 더","지금 엄마 아빠 얼굴은 어떤 기분 같아?"]],
            why:"말 없이도 마음을 전할 수 있다는 걸 다시 떠올려요. 가족의 표정을 보고 기분을 짐작해 보는 건 다른 사람의 마음을 헤아리는 힘(공감)을 키우는 연습이에요." },
 };
 const BAR_ORDER = ["energy","solver","story","heart"];   // URL b= 값의 순서
 
-/* 1등 + 2등 조합 설명 (12가지) */
+/* 16가지 유형: "1등-2등", 집중형은 "1등-1등" */
 const COMBOS = {
-  "energy-solver":{ title:"움직이며 궁리하는 발명가",
-    desc:"몸을 움직여 직접 해 보고, 어떻게 하면 더 잘 될지 궁리하며 놀았어요. '더 빨리 돌리면 불이 더 밝아질까?'처럼 몸으로 실험하는 놀이에 푹 빠졌어요.",
-    tip:"'어떻게 하면 더 멀리 던질까?'처럼 몸으로 하는 작은 실험을 같이 해 보세요." },
-  "energy-story":{ title:"온몸으로 표현하는 무용가",
-    desc:"크게 움직이면서 기분과 상상을 몸짓으로 드러냈어요. 뛰고 춤추는 순간 자체가 아이만의 이야기였어요.",
-    tip:"좋아하는 노래에 맞춰 '신나는 춤, 졸린 춤'처럼 기분을 몸으로 표현해 보세요." },
-  "energy-heart":{ title:"함께 달리는 팀 플레이어",
-    desc:"다른 사람과 힘을 모아 움직이는 놀이를 즐겼어요. 여럿이 같이 해야 움직이는 놀이에서 특히 신이 났어요.",
-    tip:"이인삼각, 손잡고 균형 잡기처럼 둘이 함께해야 되는 몸 놀이를 해 보세요." },
-  "solver-energy":{ title:"직접 해 보는 탐험가",
-    desc:"계획을 세우고 몸으로 직접 부딪혀 확인하며 놀았어요. 텐트 치기처럼 머리와 손발을 같이 쓰는 활동에 오래 머물렀어요.",
-    tip:"이불과 의자로 집 안에 텐트를 만들어 보세요. 순서를 아이가 정하게 해 주세요." },
-  "solver-story":{ title:"이야기를 짓는 꼬마 설계자",
-    desc:"차근차근 순서를 정하고, 그 과정을 이야기로 엮었어요. '먼저 이걸 하고, 그다음엔…'처럼 계획과 상상을 함께 쓰며 놀았어요.",
-    tip:"다음 주말 나들이 계획을 그림 일기처럼 같이 그려 보세요." },
-  "solver-heart":{ title:"함께 머리를 맞대는 해결사",
-    desc:"다른 사람과 생각을 나누며 문제를 풀었어요. 역할을 나누고 함께 정하는 놀이에서 빛났어요.",
-    tip:"저녁 메뉴나 장보기 목록을 아이와 의논해서 같이 정해 보세요." },
-  "story-energy":{ title:"몸으로 이야기하는 배우",
-    desc:"상상한 이야기를 몸짓과 움직임으로 펼쳤어요. 이야기 속 주인공이 되어 직접 움직이는 걸 좋아했어요.",
-    tip:"그림책 한 장면을 골라 몸으로 따라 하는 역할놀이를 해 보세요." },
-  "story-solver":{ title:"생각을 그리는 작가",
-    desc:"이야기를 이리저리 짜 맞추며 나만의 장면을 만들었어요. '만약에 ~라면?'을 떠올리는 놀이에 오래 머물렀어요.",
-    tip:"아는 동화의 결말을 아이와 함께 새로 바꿔 지어 보세요." },
-  "story-heart":{ title:"마음을 나누는 이야기꾼",
-    desc:"나의 이야기와 감정을 표현하고 다른 사람과 나눴어요. 내 마음을 그림과 말로 꺼내 보는 시간을 즐겼어요.",
-    tip:"잠들기 전에 '오늘의 기분 한 가지'를 서로 이야기해 보세요." },
-  "heart-energy":{ title:"몸짓으로 통하는 친구",
-    desc:"표정과 몸짓으로 다른 사람과 신호를 주고받았어요. 함께 움직이며 마음을 맞추는 놀이에 푹 빠졌어요.",
-    tip:"말 없이 몸짓으로만 단어를 맞히는 놀이를 해 보세요." },
-  "heart-solver":{ title:"생각을 모으는 조율사",
-    desc:"다른 사람의 생각을 듣고 함께 좋은 방법을 찾았어요. '어떻게 하면 모두 공평할까?' 같은 고민에 오래 머물렀어요.",
-    tip:"간식을 공평하게 나누는 방법을 아이가 직접 정해 보게 해 주세요." },
-  "heart-story":{ title:"마음을 읽는 통역가",
-    desc:"다른 사람의 표정과 마음을 읽고, 내 마음도 말로 표현했어요. 마음을 주고받는 놀이에서 가장 즐거워했어요.",
-    tip:"그림책을 읽다가 '이 친구는 지금 어떤 기분일까?' 하고 물어봐 주세요." },
-};
+  "energy-solver":{ title:"움직이며 궁리하는 발명가", slogan:"일단 해 보고, 더 잘 되는 방법을 찾아요!", tags:["몸으로실험","한번더","왜그럴까"],
+    scenes:["페달을 돌리다가 '더 빨리 하면 불이 더 밝아져?' 하고 물어봤을 거예요.","같은 놀이를 여러 번 하면서 방법을 조금씩 바꿔 봤을 거예요."],
+    grow:"직접 해 보고 결과를 확인하는 과정은 과학자처럼 생각하는 힘(예상하기 → 해 보기 → 확인하기)의 첫걸음이에요.",
+    tip:"종이비행기를 접어 '어떻게 접으면 더 멀리 날까?' 하고 같이 실험해 보세요." },
+  "energy-story":{ title:"온몸으로 표현하는 무용가", slogan:"기분이 좋으면 몸이 먼저 춤춰요!", tags:["온몸표현","신나는순간","나만의동작"],
+    scenes:["신나는 순간에 저절로 몸을 흔들거나 펄쩍 뛰었을 거예요.","'나 이거 봐!' 하며 자기만의 동작을 보여 줬을 거예요."],
+    grow:"감정을 몸으로 표현하는 경험은 내 기분을 알아차리고 건강하게 드러내는 힘을 키워요. 말로 하기 어려운 마음도 몸으로는 먼저 표현할 수 있어요.",
+    tip:"좋아하는 노래에 맞춰 '신나는 춤, 졸린 춤, 화난 춤'처럼 기분 따라 춤을 바꿔 보세요." },
+  "energy-heart":{ title:"함께 달리는 팀 플레이어", slogan:"같이 하면 더 신나요!", tags:["힘을모아","같이하자","협동놀이"],
+    scenes:["휴먼카처럼 여럿이 힘을 합쳐야 움직이는 놀이에서 특히 신났을 거예요.","처음 만난 친구에게도 '같이 하자!' 하고 다가갔을 수 있어요."],
+    grow:"몸을 맞춰 함께 움직이는 경험은 다른 사람과 속도와 리듬을 맞추는 협력의 힘을 키워요.",
+    tip:"이인삼각이나 둘이 손잡고 균형 잡기처럼 함께해야 되는 몸 놀이를 해 보세요." },
+  "energy-energy":{ title:"에너지 폭발 발전가", slogan:"오늘은 온몸이 발전소였어요!", tags:["지치지않는","한번더","온몸으로"],
+    scenes:["뛰고, 돌리고, 춤추는 놀이를 쉬지 않고 이어 갔을 거예요.","'한 번만 더!'를 여러 번 외쳤을 거예요."],
+    grow:"한 가지 몸 놀이에 깊이 빠지는 경험은 끝까지 해내는 끈기와 몸을 조절하는 힘을 함께 키워요.",
+    tip:"집에서 '거실 운동회'를 열어 보세요. 풍선 안 떨어뜨리기, 쿠션 징검다리면 충분해요." },
 
-/* ═════════ URL 읽기 (정해진 값만 받아들임) ═════════ */
+  "solver-energy":{ title:"직접 해 보는 탐험가", slogan:"생각만 하지 않고 직접 확인해요!", tags:["계획하고실행","직접해보기","탐험"],
+    scenes:["텐트를 치거나 짐을 옮기며 머리와 손발을 같이 썼을 거예요.","'여기는 이렇게 하면 되겠다!' 하고 바로 움직였을 거예요."],
+    grow:"계획을 몸으로 옮겨 보는 경험은 생각한 것을 실제로 해내는 실행력을 키워요.",
+    tip:"이불과 의자로 집 안에 텐트를 만들어 보세요. 만드는 순서는 아이가 정하게 해 주세요." },
+  "solver-story":{ title:"이야기를 짓는 꼬마 설계자", slogan:"순서를 정하면 이야기가 돼요!", tags:["차근차근","만약에","나만의계획"],
+    scenes:["'먼저 이걸 하고, 그다음엔…' 하며 놀이 순서를 정했을 거예요.","계획한 일을 이야기처럼 들려줬을 수 있어요."],
+    grow:"순서를 세우고 그 과정을 이야기로 엮는 경험은 논리적으로 생각하고 설명하는 힘을 함께 키워요.",
+    tip:"다음 주말 나들이 계획을 그림 일기처럼 같이 그려 보세요." },
+  "solver-heart":{ title:"함께 머리를 맞대는 해결사", slogan:"같이 생각하면 더 좋은 방법이 나와요!", tags:["의논하기","역할나누기","팀플레이"],
+    scenes:["역할놀이에서 '너는 이거 해, 나는 이거 할게' 하고 역할을 나눴을 거예요.","문제가 생기면 옆 사람에게 '어떻게 할까?' 하고 물었을 거예요."],
+    grow:"다른 사람과 의견을 나누며 문제를 푸는 경험은 협력하며 해결하는 힘과 의사소통 능력을 함께 키워요.",
+    tip:"저녁 메뉴나 장보기 목록을 아이와 의논해서 같이 정해 보세요." },
+  "solver-solver":{ title:"끝까지 파고드는 해결사", slogan:"궁금한 건 풀릴 때까지!", tags:["집중력","왜그럴까","척척"],
+    scenes:["한 가지 활동을 붙잡고 오래 고민했을 거예요.","'이건 왜 이렇게 돼?' 하는 질문을 많이 했을 거예요."],
+    grow:"한 문제에 오래 머무는 경험은 집중하는 힘과 스스로 답을 찾아가는 힘을 키워요.",
+    tip:"퍼즐이나 블록처럼 답을 찾아가는 놀이를 시간 제한 없이 마음껏 하게 해 주세요." },
+
+  "story-energy":{ title:"몸으로 이야기하는 배우", slogan:"상상한 이야기를 몸으로 보여 줘요!", tags:["역할놀이","상상력","주인공"],
+    scenes:["이야기 속 주인공처럼 흉내 내며 움직였을 거예요.","'나는 지금 ○○야!' 하며 역할에 푹 빠졌을 거예요."],
+    grow:"상상을 몸으로 표현하는 역할놀이는 다른 사람의 입장이 되어 보는 경험이 되고, 표현력과 상상력을 함께 키워요.",
+    tip:"그림책 한 장면을 골라 가족이 각자 역할을 맡아 몸으로 연기해 보세요." },
+  "story-solver":{ title:"생각을 그리는 작가", slogan:"'만약에?'로 나만의 이야기를 지어요!", tags:["만약에","이야기짓기","상상설계"],
+    scenes:["그림이나 글로 이야기를 이리저리 바꿔 가며 만들었을 거예요.","'만약에 ~라면?' 하고 새로운 장면을 떠올렸을 거예요."],
+    grow:"이야기의 앞뒤를 맞춰 보는 경험은 상상력과 함께 이야기를 짜임새 있게 이어 붙이는 힘(서사 구성력)을 키워요.",
+    tip:"아는 동화의 결말을 아이와 함께 새로 바꿔 지어 보세요." },
+  "story-heart":{ title:"마음을 나누는 이야기꾼", slogan:"내 마음을 이야기로 들려줘요!", tags:["감정표현","나누기","따뜻한이야기"],
+    scenes:["자기가 만든 그림이나 이야기를 보여 주며 설명했을 거예요.","기분이나 소중한 사람에 대한 이야기를 꺼냈을 수 있어요."],
+    grow:"내 마음을 표현하고 다른 사람과 나누는 경험은 감정을 말로 다루는 힘과 관계를 맺는 힘을 함께 키워요.",
+    tip:"잠들기 전에 '오늘의 기분 한 가지'를 서로 이야기해 보세요." },
+  "story-story":{ title:"이야기에 푹 빠진 작가", slogan:"오늘은 나만의 이야기 세상에 있었어요!", tags:["몰입","상상력","그림책"],
+    scenes:["그리고 쓰는 활동에 오래 머물렀을 거예요.","작은 것에도 이야기를 붙이며 놀았을 거예요."],
+    grow:"한 가지 이야기에 깊이 몰입하는 경험은 상상력과 함께 생각을 글과 그림으로 옮기는 표현력을 키워요.",
+    tip:"'나만의 그림책' 공책을 하나 만들어 주세요. 오늘 이야기의 다음 장을 이어 그려 볼 수 있어요." },
+
+  "heart-energy":{ title:"몸짓으로 통하는 친구", slogan:"말보다 몸짓이 먼저 통해요!", tags:["눈빛교환","함께움직이기","몸짓대화"],
+    scenes:["다른 사람과 동작을 맞추는 놀이를 즐겼을 거예요.","눈빛이나 손짓으로 신호를 주고받았을 거예요."],
+    grow:"몸짓과 표정으로 신호를 주고받는 경험은 비언어적 소통 능력과 함께 다른 사람과 호흡을 맞추는 힘을 키워요.",
+    tip:"말 없이 몸짓으로만 단어를 맞히는 '몸으로 말해요' 놀이를 해 보세요." },
+  "heart-solver":{ title:"생각을 모으는 조율사", slogan:"모두에게 좋은 방법을 찾아요!", tags:["공평하게","의견모으기","배려"],
+    scenes:["다른 사람의 생각을 듣고 '그럼 이렇게 하자' 하고 정리했을 거예요.","'어떻게 하면 모두 공평할까?' 같은 고민에 오래 머물렀을 거예요."],
+    grow:"여러 생각을 듣고 함께 정하는 경험은 공정함과 배려를 생각하는 힘, 갈등을 풀어 가는 힘을 키워요.",
+    tip:"간식을 공평하게 나누는 방법을 아이가 직접 정해 보게 해 주세요." },
+  "heart-story":{ title:"마음을 읽는 통역가", slogan:"표정만 봐도 마음을 알아요!", tags:["공감","표정읽기","마음말하기"],
+    scenes:["다른 사람의 표정을 보고 '왜 그래?' 하고 물어봤을 거예요.","내 마음을 말이나 그림으로 표현해 봤을 거예요."],
+    grow:"다른 사람의 마음을 짐작하고 내 마음도 말로 표현하는 경험은 공감 능력과 감정 표현력을 함께 키워요.",
+    tip:"그림책을 읽다가 '이 친구는 지금 어떤 기분일까?' 하고 물어봐 주세요." },
+  "heart-heart":{ title:"모두와 통하는 통역가", slogan:"오늘은 마음을 주고받는 데 푹 빠졌어요!", tags:["소통왕","함께라서","마음나누기"],
+    scenes:["다른 사람과 함께하는 놀이를 계속 찾아다녔을 거예요.","표정·몸짓·말로 마음을 주고받으며 즐거워했을 거예요."],
+    grow:"다른 사람과 마음을 나누는 경험이 쌓이면 공감하고 협력하는 힘이 자라요. 관계 속에서 즐거움을 찾는 힘이에요.",
+    tip:"가족끼리 '오늘 고마웠던 일'을 하나씩 말해 보세요." },
+};
+/* 찰떡 짝꿍: 일반형은 1·2등을 뒤집은 유형, 집중형은 서로 보완하는 집중형 */
+const PURE_BUDDY = { energy:"heart", heart:"energy", solver:"story", story:"solver" };
+
+/* ═════════════ URL 읽기 (정해진 값만 받아들임) ═════════════ */
 const P = new URLSearchParams(location.search);
 const pick = (k, ok) => ok.includes(P.get(k)) ? P.get(k) : null;
 const type = pick("type", Object.keys(TYPES));
-const sub  = pick("sub",  Object.keys(TYPES));
+let   sub  = pick("sub",  Object.keys(TYPES));
 const topF = pick("top",  FLOOR_ORDER);
 const nextF = pick("next", FLOOR_ORDER);
 const both = P.get("both") === "1";
+const pure = P.get("pure") === "1" && !both;
 const visited = (P.get("v") || "").split(",").filter(f => FLOOR_ORDER.includes(f));
 const n = visited.length || Math.min(4, Math.max(0, parseInt(P.get("n")) || 0));
 const bars = (P.get("b") || "").split(",").map(x => Math.max(0, Math.min(100, parseInt(x) || 0)));
+const hasBars = bars.length === 4 && bars.some(x => x > 0);
 
 const app = document.getElementById("app");
 const img = t => `images/${t}.webp`;
 
 if (!type) {
   app.innerHTML = `
-    <div class="empty">
-      <img src="${img("exit")}" alt="놀이 발자국 공룡">
-      <h1>놀이 발자국</h1>
-      <p>출구 스테이션에서 카드를 태그하고<br>QR을 찍으면 오늘의 놀이 유형이 나와요.</p>
-    </div>`;
+    <div class="empty"><img src="${img("exit")}" alt="놀이 발자국 공룡">
+      <h1>놀이 발자국</h1><p>출구 스테이션에서 카드를 태그하고<br>QR을 찍으면 오늘의 놀이 유형이 나와요.</p></div>`;
   return;
 }
 
-const T = TYPES[type], S = sub && sub !== type ? TYPES[sub] : null;
-const C = S ? COMBOS[`${type}-${sub}`] : null;
-document.documentElement.style.setProperty("--accent", T.color);
-document.documentElement.style.setProperty("--accent-soft", T.soft);
+/* 순위 정하기 */
+let rank;
+if (hasBars) rank = [...BAR_ORDER].sort((a, b) => bars[BAR_ORDER.indexOf(b)] - bars[BAR_ORDER.indexOf(a)]);
+else rank = [type, ...(sub ? [sub] : []), ...BAR_ORDER.filter(k => k !== type && k !== sub)];
+rank = [type, ...rank.filter(k => k !== type)];          // 1등은 항상 type
+if (!sub || sub === type) sub = rank[1];
+rank = [type, sub, ...rank.filter(k => k !== type && k !== sub)];
+
+const T = TYPES[type], S = TYPES[sub];
+const key = pure ? `${type}-${type}` : `${type}-${sub}`;
+const C = COMBOS[key];
+const buddyKey = pure ? `${PURE_BUDDY[type]}-${PURE_BUDDY[type]}` : `${sub}-${type}`;
+
+/* 유형별 색: 1등 색 + 2등 색 (집중형은 1등 색만) */
+const R = document.documentElement.style;
+R.setProperty("--accent", T.color);   R.setProperty("--accent-soft", T.soft);   R.setProperty("--accent-ink", T.ink);
+R.setProperty("--accent2", pure ? T.color : S.color);
+R.setProperty("--accent2-soft", pure ? T.soft : S.soft);
+
+const pct = hasBars ? (() => { const s = bars.reduce((a, b) => a + b, 0); return Object.fromEntries(BAR_ORDER.map((k, i) => [k, Math.round(bars[i] / s * 100)])); })() : null;
+
+/* 꾸밈 아이콘 (1등 아이콘 + 2등 아이콘이 떠 있음) */
+const c1 = T.color, c2 = pure ? T.color : S.color;
+const blobs = [[-8,4,46,c1],[70,18,40,c2],[-6,56,34,c2],[74,62,44,c1]]
+  .map(([x, y, w, c]) => `<span class="blob" style="left:${x}%;top:${y}%;width:${w}%;aspect-ratio:1;background:${c}"></span>`).join("");
+const star = c => `<svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="${c}"/></svg>`;
+const sparkPos = pure
+  ? [[10,10,22],[84,8,16],[6,44,14],[88,36,24],[12,66,16],[82,60,14]]
+  : [[10,10,18],[84,9,14],[86,40,20],[8,52,14]];
+const sparks = sparkPos.map(([x, y, s], i) =>
+  `<span class="spark" style="left:${x}%;top:${y}%;width:${s}px;height:${s}px">${star(i % 2 ? "#fff" : (i % 4 ? c2 : c1))}</span>`).join("");
+const decos = blobs + sparks;
 
 /* 발자국 */
 const steps = FLOOR_ORDER.map(f =>
-  `<div class="step ${visited.includes(f) ? "on" : ""}"><div class="dot">${FLOORS[f].icon}</div>${f}</div>`).join("");
+  `<div class="step ${visited.includes(f) ? "on" : ""}" style="--sc:${TYPES[FLOORS[f].type].ink};--ss:${TYPES[FLOORS[f].type].soft}"><div class="dot">${stampIcon(f)}</div>${f}</div>`).join("");
 const cheer = n >= 4 ? "🎉 발자국을 모두 모았어요!" : n > 0 ? `발자국 ${n}개나 모았어요!` : "";
+const title = both ? `${T.name}<br><span style="font-size:20px">이면서</span> ${S.name}` : T.name;
 
-/* 메인 */
-const title = both && S ? `${T.name}<br><span style="font-size:20px">이면서</span> ${S.name}` : T.name;
+/* 영역이 오늘 어디서 쌓였는지 */
+const whereLine = k => {
+  const f = TYPES[k].floor;
+  return visited.includes(f)
+    ? `오늘은 주로 <span class="where">${f} ${FLOORS[f].name}</span>에서 쌓였어요.`
+    : `오늘은 여러 전시에서 조금씩 쌓였어요.`;
+};
+const domBlock = (k, label, open = false) => `
+  <div class="dom" style="background:${TYPES[k].soft};--fade:${TYPES[k].soft}">
+    <div class="rank" style="color:${TYPES[k].ink}">${label}${pct ? ` · ${pct[k]}%` : ""}</div>
+    <div class="dname" style="color:${TYPES[k].ink}"><span class="hicon">${ICONS[TYPES[k].floor]}</span>${TYPES[k].bar}</div>
+    <div class="clamp${open ? " open" : ""}" style="--fade:${TYPES[k].soft}">
+      <p>${TYPES[k].what} ${whereLine(k)}</p>
+      <p>${TYPES[k].look}</p>
+      <p><b>이 놀이로 자라는 힘</b><br>${TYPES[k].grow}</p>
+    </div>
+    ${open ? "" : `<button class="moreBtn" style="color:${TYPES[k].ink}">더 보기 ▾</button>`}
+  </div>`;
 
-/* 막대: 오늘 놀이 중 차지한 비율(%) */
-let barHtml = "";
-if (bars.length === 4 && bars.some(x => x > 0)) {
-  const sum = bars.reduce((a, b) => a + b, 0);
-  const pct = bars.map(x => Math.round(x / sum * 100));
-  barHtml = `
+const barsHtml = hasBars ? BAR_ORDER.map(k => `
+  <div class="bar">
+    <div class="lbl"><span>${TYPES[k].bar}<small>${TYPES[k].barHint}</small></span><span class="pct" style="color:${TYPES[k].ink}">${pct[k]}%</span></div>
+    <div class="track"><div class="fill" data-w="${Math.max(4, pct[k] / Math.max(...Object.values(pct)) * 100)}" style="background:${TYPES[k].color}"></div></div>
+  </div>`).join("") : "";
+
+const restHtml = rank.slice(2).map(k => {
+  const f = TYPES[k].floor;
+  return `<div class="rest">${TYPES[k].emoji} <b>${TYPES[k].bar}</b>${pct ? ` ${pct[k]}%` : ""} — 오늘은 조금 덜 했어요. 다음엔 <b>${f} ${FLOORS[f].name}</b>에서 더 해 볼 수 있어요.</div>`;
+}).join("");
+
+const whyHtml = `
   <section class="card">
-    <h2>📊 오늘 이렇게 놀았어요</h2>
-    ${BAR_ORDER.map((k, i) => `
-      <div class="bar">
-        <div class="lbl"><span>${TYPES[k].bar}<small>${TYPES[k].barHint}</small></span><span class="pct" style="color:${TYPES[k].color}">${pct[i]}%</span></div>
-        <div class="track"><div class="fill" data-w="${Math.max(4, pct[i] / Math.max(...pct) * 100)}" style="background:${TYPES[k].color}"></div></div>
-      </div>`).join("")}
-    <p class="muted" style="margin-top:8px">전시마다 머문 시간을 바탕으로, 오늘 놀이 중 어떤 놀이가 얼마나 많았는지 나타냈어요.</p>
+    <h2>🔎 왜 이렇게 나왔을까?</h2>
+    <div class="lead">전시마다 머문 시간을 바탕으로, 오늘 놀이 중 어떤 놀이가 얼마나 많았는지 계산했어요.</div>
+    ${barsHtml}
+    ${domBlock(type, "1위", pure)}
+    ${pure
+      ? `<div class="rest">${S.emoji} 두 번째로 많이 한 놀이는 <b>${S.bar}</b>${pct ? ` ${pct[sub]}%` : ""}예요.</div>`
+      : domBlock(sub, "2위")}
+    ${restHtml}
+    ${pure ? `<p class="muted" style="margin-top:12px">✨ 1위가 2위보다 확실히 앞서서 <b>집중형</b>이 나왔어요. 한 가지 놀이에 깊이 빠졌다는 뜻이에요.</p>` : ""}
   </section>`;
-}
 
-/* 가장 빠져 있던 곳 + 사진 + 원리 */
+const detailHtml = `
+  <section class="card">
+    <h2>🦖 ${C.title}</h2>
+    <div class="lead">${pure ? `${T.bar}에 푹 빠진 집중형` : `${T.bar} + ${S.bar}가 만났어요`}</div>
+    <div class="clamp">
+      <h3 style="margin-top:4px">오늘 이런 모습이었을 거예요</h3>
+      <ul class="scenes">${C.scenes.map(s => `<li>${s}</li>`).join("")}</ul>
+      <h3>이 조합으로 자라는 힘</h3>
+      <p>${C.grow}</p>
+      <div class="tip"><b>🏠 집에서 이어 가기</b><br>${C.tip}</div>
+    </div>
+    <button class="moreBtn">더 보기 ▾</button>
+    <div class="pair">
+      <div>🤝 찰떡 놀이 짝꿍<b>${COMBOS[buddyKey].title}</b></div>
+      ${nextF ? `<div>🚀 다음 도전<b>${TYPES[FLOORS[nextF].type].name}</b>${nextF} ${FLOORS[nextF].name}에서</div>` : ""}
+    </div>
+  </section>`;
+
 const photoHtml = f => Array.from({ length: PHOTOS_PER_FLOOR }, (_, i) =>
-  `<img src="images/exhibits/${f}-${i + 1}.jpg" alt="${FLOORS[f].name} 사진 ${i + 1}" loading="lazy" onerror="this.remove()">`).join("");
+  `<img src="images/exhibits/${f}-${i + 1}.jpg" alt="${FLOORS[f].name} 사진 ${i + 1}" onerror="this.remove()">`).join("");
 const topHtml = topF ? `
   <section class="card">
     <h2>⭐ 가장 푹 빠져 있던 곳</h2>
-    <p><b>${topF} ${FLOORS[topF].name}</b><br><span class="muted">${FLOORS[topF].intro}</span></p>
+    <p style="margin-top:8px"><b>${topF} ${FLOORS[topF].name}</b><br><span class="muted">${FLOORS[topF].intro}</span></p>
     <div class="photos">${photoHtml(topF)}</div>
     <details><summary>💡 이 전시에 숨은 원리</summary><p>${FLOORS[topF].principle}</p></details>
   </section>` : "";
 
-/* 다음 방문 */
 const nextHtml = nextF ? `
   <section class="card">
     <h2>🚀 다음엔 이것도 도전!</h2>
-    <div class="next">
+    <div class="next" style="margin-top:10px">
       <img src="${img(FLOORS[nextF].type)}" alt="${FLOORS[nextF].name} 공룡">
       <div>
         <div class="floor">${nextF} · ${visited.includes(nextF) ? "다음엔 더 오래 놀아 보기" : "오늘 못 해 본 놀이"}</div>
@@ -266,22 +440,20 @@ app.innerHTML = `
   ${visited.length ? `<div class="steps">${steps}</div>` : ""}
   ${cheer ? `<div class="cheer">${cheer}</div>` : ""}
 
-  <section class="hero">
+  <section class="hero${pure ? " pure" : ""}">
+    ${decos}
     <div class="eyebrow">오늘 우리 아이는</div>
-    <img src="${img(type)}" alt="${T.name} 공룡">
-    <h1><span class="emoji">${T.emoji}</span>${title}</h1>
-    ${C ? `<div class="combo">${C.title}</div>` : ""}
+    <img src="images/types/${key}.png" onerror="this.onerror=null;this.src='${img(type)}'" alt="${C.title} 공룡">
+    <h1><span class="hicon">${ICONS[T.floor]}</span>${title}</h1>
+    <div class="combo">${C.title}</div>
+    ${pure ? `<br><span class="pureTag">✨ 집중형 · 한 가지 놀이에 푹 빠졌어요</span>` : ""}
+    <div class="slogan">"${C.slogan}"</div>
+    <div class="tags">${C.tags.map(t => `<span>#${t}</span>`).join("")}</div>
   </section>
   <p class="note">성격 진단이 아니라 <b>오늘의 놀이 방식</b>이에요.<br>다음엔 다른 유형이 나올 수도 있어요!</p>
 
-  ${C ? `
-  <section class="card">
-    <h2>🦖 ${C.title}</h2>
-    <p>${C.desc}</p>
-    <div class="tip"><b>집에서는 이렇게</b><br>${C.tip}</div>
-  </section>` : ""}
-
-  ${barHtml}
+  ${whyHtml}
+  ${detailHtml}
   ${topHtml}
 
   <section class="card">
@@ -292,7 +464,7 @@ app.innerHTML = `
 
   <section class="card">
     <h2>🏠 집에서 이어서 놀기</h2>
-    <p>${sheetFloor.name} 전시 페이지에서 집에서 해 볼 수 있는 워크시트를 내려받을 수 있어요.</p>
+    <p style="margin-top:8px">${sheetFloor.name} 전시 페이지에서 집에서 해 볼 수 있는 워크시트를 내려받을 수 있어요.</p>
     <a class="btn" href="${sheetFloor.url}" target="_blank" rel="noopener">워크시트 보러 가기</a>
   </section>
 
@@ -303,7 +475,15 @@ app.innerHTML = `
     카메라 없이 카드 번호와 시간만 사용했어요.<br>이 결과는 어디에도 저장되지 않아요.
   </footer>`;
 
-/* 사진이 하나도 없으면 사진 칸 숨김 */
+/* 더 보기 버튼 */
+document.querySelectorAll(".moreBtn").forEach(btn => {
+  const box = btn.previousElementSibling;
+  if (box.scrollHeight <= box.clientHeight + 4) { box.classList.add("open"); btn.remove(); return; }
+  btn.addEventListener("click", () => {
+    const open = box.classList.toggle("open");
+    btn.textContent = open ? "접기 ▴" : "더 보기 ▾";
+  });
+});
 setTimeout(() => document.querySelectorAll(".photos").forEach(el => { if (!el.querySelector("img")) el.remove(); }), 1500);
 requestAnimationFrame(() => setTimeout(() =>
   document.querySelectorAll(".fill").forEach(el => el.style.width = el.dataset.w + "%"), 150));
