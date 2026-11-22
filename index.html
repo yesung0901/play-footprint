@@ -112,6 +112,10 @@
   .tstep time{display:block;font-size:11px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
   .tline{flex:1 1 8px;max-width:30px;min-width:8px;border-top:2.5px dashed #E2CFD8;margin-top:21px}
   .unseen{text-align:center;font-size:12px;color:var(--muted);margin-top:4px}
+  .tstep.again .tdot{width:34px;height:34px;margin-top:4px;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--sc),0 0 0 8px var(--ss)}
+  .tstep.again .tdot svg{width:16px;height:16px}
+  .tstep .re{display:block;font-size:10.5px;font-weight:800;color:#fff;background:var(--sc);border-radius:999px;padding:0 6px;margin:2px auto 0;width:max-content}
+  .revisit{text-align:center;font-size:12.5px;font-weight:700;color:var(--ink);margin-top:6px}
   /* 놀이 경로 */
   .route{list-style:none;margin-top:8px;position:relative}
   .route::before{content:"";position:absolute;left:58px;top:14px;bottom:14px;width:2px;background:#EEDFE6}
@@ -467,14 +471,21 @@ const decos = blobs + sparks;
 /* 발자국 */
 const routeAll = (P.get("r") || "").split("_").map(x => x.split(".")).filter(([f, t]) => (FLOOR_ORDER.includes(f) || f === "X") && /^\d{4}$/.test(t || ""));
 const trailHtml = routeAll.length ? (() => {
+  const seen = {};
   const items = routeAll.map(([f, t], i) => {
     const time = t.slice(0, 2) + ":" + t.slice(2);
     if (f === "X") return `<div class="tstep" style="--sc:var(--pink);--ss:var(--pink-soft)"><div class="tdot">${ICONS.X}</div>출구<time>${time}</time></div>`;
     const ty = TYPES[FLOORS[f].type];
-    return `<div class="tstep" style="--sc:${ty.ink};--ss:${ty.soft}"><div class="tdot">${stampIcon(f)}<span class="num">${i + 1}</span></div>${f}<time>${time}</time></div>`;
+    seen[f] = (seen[f] || 0) + 1;
+    const again = seen[f] > 1;   // 다시 들른 층: 작게 + '↺ 다시!' 표시
+    return `<div class="tstep${again ? " again" : ""}" style="--sc:${ty.ink};--ss:${ty.soft}"><div class="tdot">${stampIcon(f)}<span class="num">${i + 1}</span></div>${f}<time>${time}</time>${again ? `<span class="re">↺ 다시!</span>` : ""}</div>`;
   });
+  const KNUM = ["", "한", "두", "세", "네", "다섯"];
+  const eunNeun = w => { const ch = [...w.replace(/[^가-힣]/g, "")].pop() || ""; const code = ch.charCodeAt(0) - 0xAC00; return code >= 0 && code % 28 ? "은" : "는"; };
+  const revisits = Object.entries(seen).filter(([, c]) => c > 1);
   const unseen = FLOOR_ORDER.filter(f => !visited.includes(f));
   return `<div class="trail">${items.join('<span class="tline"></span>')}</div>` +
+    revisits.map(([f, c]) => `<div class="revisit">💛 ${f} ${FLOORS[f].name}${eunNeun(FLOORS[f].name)} ${KNUM[c] || c} 번이나 찾아갔어요!</div>`).join("") +
     (unseen.length ? `<div class="unseen">아직 안 가 본 곳: ${unseen.map(f => `${f} ${FLOORS[f].name}`).join(", ")}</div>` : "");
 })() : "";
 const steps = FLOOR_ORDER.map(f =>
