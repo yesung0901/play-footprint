@@ -148,6 +148,17 @@
   .buddy .bn{font-size:17px;font-weight:800;margin:2px 0 6px}
   .buddy p{font-size:14.5px}
   .buddy .play{margin-top:8px;font-size:14px;background:#fff;border-radius:12px;padding:10px 12px}
+  /* 발표용 잠금 (?preview=1) */
+  .lockwrap{position:relative;max-height:560px;overflow:hidden;margin-top:16px;border-radius:22px}
+  .lockbody{filter:blur(7px);opacity:.75;pointer-events:none;user-select:none}
+  .lockbody > .card:first-child{margin-top:0}
+  .lockwrap::after{content:"";position:absolute;left:0;right:0;bottom:0;height:160px;background:linear-gradient(transparent,var(--bg))}
+  .lockmsg{position:absolute;z-index:2;left:50%;top:70px;transform:translateX(-50%);width:min(86%,320px);text-align:center;
+           background:#fffffff0;border-radius:22px;padding:22px 18px;box-shadow:0 10px 30px rgba(58,42,51,.15);border:2px solid var(--accent)}
+  .lockicon{font-size:34px;animation:wiggle 2.4s ease-in-out infinite}
+  .lockmsg b{display:block;font-family:'SchoolSafetyRoundedSmile',Pretendard,sans-serif;font-size:19px;color:var(--accent-ink);margin-top:6px}
+  .lockmsg p{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.6}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}10%{transform:rotate(-12deg)}20%{transform:rotate(10deg)}30%{transform:rotate(0)}}
   /* 더 보기 */
   .clamp{max-height:150px;overflow:hidden;position:relative;transition:max-height .4s ease}
   .clamp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(transparent,var(--fade,#fff))}
@@ -411,6 +422,7 @@ const PURE_BUDDY = { energy:"heart", heart:"energy", solver:"story", story:"solv
 
 /* ═════════════ URL 읽기 (정해진 값만 받아들임) ═════════════ */
 const P = new URLSearchParams(location.search);
+const PREVIEW = P.get("preview") === "1";   // 발표용: 아래 섹션 잠금
 const pick = (k, ok) => ok.includes(P.get(k)) ? P.get(k) : null;
 const type = pick("type", Object.keys(TYPES));
 let   sub  = pick("sub",  Object.keys(TYPES));
@@ -458,7 +470,7 @@ const routeHtml = route.length ? `
     <h2>🗺️ 오늘의 놀이 경로</h2>
     <ul class="route">${route.map(([f, t]) => {
       const time = t.slice(0, 2) + ":" + t.slice(2);
-      if (f === "X") return `<li><time>${time}</time><span class="pin" style="background:var(--pink)">${ICONS.X}</span><span class="where"><b>출구</b><small>발자국 ${n}개 완성!</small></span></li>`;
+      if (f === "X") return `<li><time>${time}</time><span class="pin" style="background:var(--pink)">${stampIcon("X")}</span><span class="where"><b>출구</b><small>발자국 ${n}개 완성!</small></span></li>`;
       const ty = TYPES[FLOORS[f].type];
       return `<li><time>${time}</time><span class="pin" style="background:${ty.color}">${ICONS[f]}</span><span class="where"><b>${f} ${FLOORS[f].name}</b><small>${ty.name}</small></span></li>`;
     }).join("")}</ul>
@@ -481,7 +493,7 @@ const trailHtml = routeAll.length ? (() => {
   const seen = {};
   const items = routeAll.map(([f, t], i) => {
     const time = t.slice(0, 2) + ":" + t.slice(2);
-    if (f === "X") return `<div class="tstep" style="--sc:var(--pink);--ss:var(--pink-soft)"><div class="tdot">${ICONS.X}</div>출구<time>${time}</time></div>`;
+    if (f === "X") return `<div class="tstep" style="--sc:var(--pink);--ss:var(--pink-soft)"><div class="tdot">${stampIcon("X")}</div>출구<time>${time}</time></div>`;
     const ty = TYPES[FLOORS[f].type];
     seen[f] = (seen[f] || 0) + 1;
     const again = seen[f] > 1;   // 다시 들른 층: 작게 + '↺ 다시!' 표시
@@ -490,7 +502,8 @@ const trailHtml = routeAll.length ? (() => {
   const KNUM = ["", "한", "두", "세", "네", "다섯"];
   const eunNeun = w => { const ch = [...w.replace(/[^가-힣]/g, "")].pop() || ""; const code = ch.charCodeAt(0) - 0xAC00; return code >= 0 && code % 28 ? "은" : "는"; };
   const revisits = Object.entries(seen).filter(([, c]) => c > 1);
-  const unseen = FLOOR_ORDER.filter(f => !visited.includes(f));
+  const routeFloors = routeAll.map(([f]) => f);
+  const unseen = FLOOR_ORDER.filter(f => !visited.includes(f) && !routeFloors.includes(f));
   return `<div class="trail${items.length > 6 ? " dense" : ""}">${items.join('<span class="tline"></span>')}</div>` +
     revisits.map(([f, c]) => `<div class="revisit">💛 ${f} ${FLOORS[f].name}${eunNeun(FLOORS[f].name)} ${KNUM[c] || c} 번이나 찾아갔어요!</div>`).join("") +
     (unseen.length ? `<div class="unseen">아직 안 가 본 곳: ${unseen.map(f => `${f} ${FLOORS[f].name}`).join(", ")}</div>` : "");
@@ -611,6 +624,9 @@ app.innerHTML = `
   <p class="note">성격 진단이 아니라 <b>오늘의 놀이 방식</b>이에요.<br>다음엔 다른 유형이 나올 수도 있어요!</p>
 
   ${detailHtml}
+  <div class="${PREVIEW ? "lockwrap" : ""}">
+  ${PREVIEW ? `<div class="lockmsg"><div class="lockicon">🔒</div><b>아직 잠겨 있어요!</b><p>왜 이 유형이 나왔는지, 가장 푹 빠졌던 곳,<br>집 가는 길 질문과 다음 모험 장소가<br>곧 열려요 ✨</p></div>` : ""}
+  <div class="${PREVIEW ? "lockbody" : ""}">
   ${whyHtml}
   ${topHtml}
 
@@ -622,6 +638,7 @@ app.innerHTML = `
 
 
   ${nextHtml}
+  </div></div>
 
   <footer>
     <div class="logo">🦖 놀이 발자국</div>
