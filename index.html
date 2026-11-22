@@ -37,7 +37,7 @@
   /* 메인 — 1등 색 → 2등 색 그라데이션 */
   .hero{border-radius:28px;padding:22px 20px 24px;text-align:center;position:relative;overflow:hidden;
         background:linear-gradient(160deg,var(--accent-soft) 0%,var(--accent-soft) 45%,var(--accent2-soft) 100%);
-        box-shadow:0 8px 30px rgba(58,42,51,.10)}
+        box-shadow:0 0 0 3px #fff,0 0 0 6px var(--accent),0 12px 34px color-mix(in srgb,var(--accent) 30%,transparent)}
   .hero > *{position:relative;z-index:1}
   .blob{position:absolute!important;z-index:0!important;border-radius:50%;filter:blur(18px);opacity:.55;pointer-events:none}
   .spark{position:absolute!important;z-index:0!important;pointer-events:none;opacity:.9}
@@ -51,17 +51,17 @@
          text-shadow:0 1px 2px rgba(0,0,0,.18);background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 4px 12px rgba(0,0,0,.10)}
   .pureTag{display:inline-block;font-size:12px;font-weight:800;color:var(--accent-ink);margin-top:10px;
            background:#fff;border:2px solid var(--accent);padding:3px 12px;border-radius:999px}
-  /* 집중형: 희귀 카드 느낌 */
-  .hero.pure{background:radial-gradient(circle at 50% 36%,#fff 0%,var(--accent-soft) 42%,color-mix(in srgb,var(--accent) 30%,var(--accent-soft)) 100%);
-             box-shadow:0 0 0 3px #fff,0 0 0 6px var(--accent),0 12px 34px color-mix(in srgb,var(--accent) 35%,transparent)}
-  .hero.pure::before{content:"";position:absolute;inset:-40%;z-index:0;opacity:.22;
+  /* 모든 유형 공통 '카드' 효과 (집중형/혼합형 차이는 배경 색 수와 태그뿐) */
+  .hero.pure{background:radial-gradient(circle at 50% 36%,#fff 0%,var(--accent-soft) 42%,color-mix(in srgb,var(--accent) 30%,var(--accent-soft)) 100%)}
+  .hero::before{content:"";position:absolute;inset:-40%;z-index:0;opacity:.16;
              background:repeating-conic-gradient(from 0deg at 50% 50%,#fff 0deg 8deg,transparent 8deg 24deg);
-             animation:spin 40s linear infinite}
-  .hero.pure .combo{background:linear-gradient(110deg,var(--accent) 0%,var(--accent) 38%,#fff8 50%,var(--accent) 62%,var(--accent) 100%);
-             background-size:250% 100%;animation:shine 3.2s ease-in-out infinite}
-  .spark{animation:twinkle 2.6s ease-in-out infinite}
-  .spark:nth-of-type(2n){animation-delay:1.3s}
-  .hero.pure .spark{animation-duration:1.8s}
+             animation:spin 55s linear infinite}
+  .hero .family{overflow:hidden}
+  .hero .family::after{content:"";position:absolute;inset:0;pointer-events:none;
+             background:linear-gradient(110deg,transparent 35%,#ffffff80 50%,transparent 65%);
+             background-size:250% 100%;animation:shine 3.6s ease-in-out infinite}
+  .spark{animation:twinkle 2.4s ease-in-out infinite}
+  .spark:nth-of-type(2n){animation-delay:1.2s}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes shine{0%{background-position:100% 0}60%,100%{background-position:-50% 0}}
   @keyframes twinkle{0%,100%{opacity:.35;scale:.8}50%{opacity:1;scale:1.1}}
@@ -112,8 +112,17 @@
   .tstep time{display:block;font-size:11px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
   .tline{flex:1 1 8px;max-width:30px;min-width:8px;border-top:2.5px dashed #E2CFD8;margin-top:21px}
   .unseen{text-align:center;font-size:12px;color:var(--muted);margin-top:4px}
+  .trail.dense .tstep{width:44px;font-size:11px}
+  .trail.dense .tstep .tdot{width:36px;height:36px}
+  .trail.dense .tstep .tdot img{width:32px;height:32px}
+  .trail.dense .tstep.again .tdot{width:30px;height:30px}
+  .trail.dense .tstep.again .tdot img{width:25px;height:25px}
+  .trail.dense .tline{flex:1 1 2px;min-width:2px;margin-top:18px}
+  .trail.dense .tstep .num{width:16px;height:16px;line-height:16px;font-size:10px;top:-6px;right:-6px}
+  .trail.dense .tstep time{font-size:10px}
   .tstep.again .tdot{width:34px;height:34px;margin-top:4px;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--sc),0 0 0 8px var(--ss)}
   .tstep.again .tdot svg{width:16px;height:16px}
+  .tstep.again .tdot img{width:30px;height:30px}
   .tstep .re{display:block;font-size:10.5px;font-weight:800;color:#fff;background:var(--sc);border-radius:999px;padding:0 6px;margin:2px auto 0;width:max-content}
   .revisit{text-align:center;font-size:12.5px;font-weight:700;color:var(--ink);margin-top:6px}
   /* 놀이 경로 */
@@ -194,7 +203,7 @@
   .empty img{width:60%;max-width:220px;mix-blend-mode:multiply}
   .empty h1{font-size:22px;margin-top:10px}
   .empty p{color:var(--muted);margin-top:6px}
-  @media (prefers-reduced-motion:reduce){.fill,.clamp{transition:none}.hero.pure::before,.hero.pure .combo,.spark{animation:none}}
+  @media (prefers-reduced-motion:reduce){.fill,.clamp{transition:none}.hero::before,.hero .family::after,.spark{animation:none}}
 </style>
 </head>
 <body>
@@ -461,9 +470,7 @@ const c1 = T.color, c2 = pure ? T.color : S.color;
 const blobs = [[-8,4,46,c1],[70,18,40,c2],[-6,56,34,c2],[74,62,44,c1]]
   .map(([x, y, w, c]) => `<span class="blob" style="left:${x}%;top:${y}%;width:${w}%;aspect-ratio:1;background:${c}"></span>`).join("");
 const star = c => `<svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="${c}"/></svg>`;
-const sparkPos = pure
-  ? [[10,10,22],[84,8,16],[6,44,14],[88,36,24],[12,66,16],[82,60,14]]
-  : [[10,10,18],[84,9,14],[86,40,20],[8,52,14]];
+const sparkPos = [[10,10,20],[84,8,15],[6,44,14],[88,36,22],[12,66,15]];   // 모든 유형 같은 개수
 const sparks = sparkPos.map(([x, y, s], i) =>
   `<span class="spark" style="left:${x}%;top:${y}%;width:${s}px;height:${s}px">${star(i % 2 ? "#fff" : (i % 4 ? c2 : c1))}</span>`).join("");
 const decos = blobs + sparks;
@@ -484,7 +491,7 @@ const trailHtml = routeAll.length ? (() => {
   const eunNeun = w => { const ch = [...w.replace(/[^가-힣]/g, "")].pop() || ""; const code = ch.charCodeAt(0) - 0xAC00; return code >= 0 && code % 28 ? "은" : "는"; };
   const revisits = Object.entries(seen).filter(([, c]) => c > 1);
   const unseen = FLOOR_ORDER.filter(f => !visited.includes(f));
-  return `<div class="trail">${items.join('<span class="tline"></span>')}</div>` +
+  return `<div class="trail${items.length > 6 ? " dense" : ""}">${items.join('<span class="tline"></span>')}</div>` +
     revisits.map(([f, c]) => `<div class="revisit">💛 ${f} ${FLOORS[f].name}${eunNeun(FLOORS[f].name)} ${KNUM[c] || c} 번이나 찾아갔어요!</div>`).join("") +
     (unseen.length ? `<div class="unseen">아직 안 가 본 곳: ${unseen.map(f => `${f} ${FLOORS[f].name}`).join(", ")}</div>` : "");
 })() : "";
